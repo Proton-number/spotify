@@ -5,9 +5,14 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { create } from "zustand";
+import { loginWithSpotify } from "../Config/Spotify";
 
 const useAuthenticationStore = create((set) => ({
   user: null,
+  setUser: (user) => {
+    console.log("Setting user:", user);
+    set({ user });
+  },
   error: null,
   identifier: "",
   password: "",
@@ -19,8 +24,8 @@ const useAuthenticationStore = create((set) => ({
     try {
       const result = await signInWithPopup(auth, googleProvider);
       set({ user: result.user });
+      loginWithSpotify();
       navigate("/home");
-      er;
     } catch (error) {
       set({ error: error.message });
     }
@@ -32,6 +37,7 @@ const useAuthenticationStore = create((set) => ({
     try {
       const result = await signInWithPopup(auth, facebookProvider);
       set({ user: result.user });
+      loginWithSpotify();
       navigate("/home");
     } catch (error) {
       set({ error: error.message });
@@ -46,6 +52,7 @@ const useAuthenticationStore = create((set) => ({
     try {
       const result = await signInWithEmailAndPassword(auth, email, password);
       set({ user: result.user });
+      loginWithSpotify();
       navigate("/home");
     } catch (error) {
       console.error("Error signing in:", error.response?.data || error.message);
@@ -62,6 +69,7 @@ const useAuthenticationStore = create((set) => ({
         password
       );
       set({ user: result.user });
+      loginWithSpotify();
       navigate("/home");
     } catch (error) {
       console.error("Error signing in:", error.response?.data || error.message);

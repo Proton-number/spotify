@@ -1,11 +1,13 @@
-import React from 'react'
+import React from "react";
+import useAuthenticationStore from "../../Store/authStore";
 
 function Home() {
+  const { user } = useAuthenticationStore();
   return (
     <div>
-      This is my home...
+      <h2> Hello, {user.display_name} Good Evening! </h2>
     </div>
-  )
+  );
 }
 
-export default Home
+export default Home;

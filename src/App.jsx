@@ -10,6 +10,7 @@ import Login from "./Components/Pages/Login";
 import Switch from "@mui/material/Switch";
 import { styled } from "@mui/material/styles";
 import ForgotPassword from "./Components/Pages/ForgotPassword";
+import Callback from "./Components/Pages/Callback";
 
 function App() {
   console.log(import.meta.env.VITE_FIREBASE_APP_ID);
@@ -81,6 +82,7 @@ function App() {
           <Route exact path="/search" element={<Search />} />
           <Route exact path="/library" element={<Library />} />
           <Route exact path="/library" element={<ForgotPassword />} />
+          <Route exact path="/callback" element={<Callback />} />
         </Routes>
       </Router>
     </>
