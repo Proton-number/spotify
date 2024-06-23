@@ -5,33 +5,34 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { create } from "zustand";
-import { useNavigate } from "react-router-dom";
-
-// const navigate = useNavigate();
 
 const useAuthenticationStore = create((set) => ({
   user: null,
   error: null,
-
+  identifier: "",
+  password: "",
+  setIdentifier: (identifier) => set({ identifier }),
+  setPassword: (password) => set({ password }),
   //Google Sign-in
-  signInWithGoogle: async () => {
+  signInWithGoogle: async (navigate) => {
     set({ error: null });
     try {
       const result = await signInWithPopup(auth, googleProvider);
       set({ user: result.user });
-      // navigate("/home");
+      navigate("/home");
+      er;
     } catch (error) {
       set({ error: error.message });
     }
   },
 
   //Facebook Sign-in
-  signInWithFacebook: async () => {
+  signInWithFacebook: async (navigate) => {
     set({ error: null });
     try {
       const result = await signInWithPopup(auth, facebookProvider);
       set({ user: result.user });
-      // navigate("/home");
+      navigate("/home");
     } catch (error) {
       set({ error: error.message });
     }
@@ -40,13 +41,30 @@ const useAuthenticationStore = create((set) => ({
   //Apple Sign In
 
   //Email and Password Sign in
-  signInWithEmailAndPassword: async (email, password) => {
+  signInWithEmailAndPassword: async (email, password, navigate) => {
     set({ error: null });
     try {
       const result = await signInWithEmailAndPassword(auth, email, password);
       set({ user: result.user });
-      // navigate("/home");
+      navigate("/home");
     } catch (error) {
+      console.error("Error signing in:", error.response?.data || error.message);
+      set({ error: error.message });
+    }
+  },
+
+  signUpWithEmailAndPassword: async (email, password, navigate) => {
+    set({ error: null });
+    try {
+      const result = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      set({ user: result.user });
+      navigate("/home");
+    } catch (error) {
+      console.error("Error signing in:", error.response?.data || error.message);
       set({ error: error.message });
     }
   },
