@@ -18,6 +18,7 @@ const useAuthenticationStore = create((set) => ({
   password: "",
   setIdentifier: (identifier) => set({ identifier }),
   setPassword: (password) => set({ password }),
+
   //Google Sign-in
   signInWithGoogle: async (navigate) => {
     set({ error: null });

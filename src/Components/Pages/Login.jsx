@@ -158,7 +158,7 @@ function Login({ IOSSwitch }) {
           onChange={(e) => setIdentifier(e.target.value)}
           label={
             <Typography variant="body2" sx={{ color: "white" }}>
-              Email or username
+              Email address or username
             </Typography>
           }
           sx={{
@@ -282,7 +282,7 @@ function Login({ IOSSwitch }) {
           </Button>
         )}
         <Stack direction="row" sx={{ alignItems: "center" }} spacing={1}>
-          <Link to={"/fogotpassword"} style={{ color: "white" }}>
+          <Link to={"/forgotpassword"} style={{ color: "white" }}>
             <Typography>Forgot your password?</Typography>
           </Link>
           {haveAccount ? (

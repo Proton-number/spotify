@@ -81,7 +81,7 @@ function App() {
           <Route exact path="/home" element={<Home />} />
           <Route exact path="/search" element={<Search />} />
           <Route exact path="/library" element={<Library />} />
-          <Route exact path="/library" element={<ForgotPassword />} />
+          <Route exact path="/forgotpassword" element={<ForgotPassword />} />
           <Route exact path="/callback" element={<Callback />} />
         </Routes>
       </Router>
