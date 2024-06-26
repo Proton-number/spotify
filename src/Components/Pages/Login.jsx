@@ -46,7 +46,7 @@ function Login({ IOSSwitch }) {
   });
 
   return (
-    <Stack spacing={5}>
+    <Stack spacing={5} sx={{}}>
       <Stack sx={{ alignItems: "center" }} spacing={2}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -70,7 +70,7 @@ function Login({ IOSSwitch }) {
             alignItems: "center",
           }}
         >
-          <Stack sx={{ width: "120%" }}>
+          <Stack>
             <Button
               onClick={() => signInWithGoogle(navigate)}
               variant="outlined"
@@ -112,7 +112,7 @@ function Login({ IOSSwitch }) {
               </Stack>
             </Button>
           </Stack>
-          <Stack sx={{ width: "120%" }}>
+          <Stack>
             <Button
               onClick={() => signInWithFacebook(navigate)}
               variant="outlined"
@@ -147,7 +147,7 @@ function Login({ IOSSwitch }) {
           sx={{
             height: "1px",
             backgroundColor: "grey",
-            width: { xs: "140%", sm: "220%", lg: "300%" },
+            width: { xs: "140%", sm: "220%", lg: "60%" },
           }}
         />
       </Stack>
@@ -162,7 +162,7 @@ function Login({ IOSSwitch }) {
             </Typography>
           }
           sx={{
-            width: "120%",
+            width: "20%",
             "& .MuiOutlinedInput-root": {
               "& fieldset": {
                 borderColor: "white",
@@ -190,7 +190,6 @@ function Login({ IOSSwitch }) {
             </Typography>
           }
           sx={{
-            width: "120%",
             "& .MuiOutlinedInput-root": {
               "& fieldset": {
                 borderColor: "white",
@@ -250,7 +249,7 @@ function Login({ IOSSwitch }) {
               borderRadius: "25px",
               padding: "14px",
               color: "black",
-              width: "120%",
+              width: "22%",
               backgroundColor: "hsl(147, 100%, 43%)",
               "&:hover": {
                 backgroundColor: "hsl(158, 100%, 34%)",
@@ -291,7 +290,7 @@ function Login({ IOSSwitch }) {
                 setHaveAccount(false);
                 setCreateAccount(false);
               }}
-              sx={{ textDecoration: "underline" }}
+              sx={{ textDecoration: "underline", cursor: "pointer" }}
             >
               Create an account
             </Typography>
@@ -301,7 +300,7 @@ function Login({ IOSSwitch }) {
                 setHaveAccount(true);
                 setCreateAccount(true);
               }}
-              sx={{ textDecoration: "underline" }}
+              sx={{ textDecoration: "underline", cursor: "pointer" }}
             >
               Have an account ?
             </Typography>
@@ -314,7 +313,7 @@ function Login({ IOSSwitch }) {
           sx={{
             height: "1px",
             backgroundColor: "grey",
-            width: { xs: "140%", sm: "220%", lg: "300%" },
+            width: { xs: "140%", sm: "220%", lg: "60%" },
           }}
         />
       </Stack>

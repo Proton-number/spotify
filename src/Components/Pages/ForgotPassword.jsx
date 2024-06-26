@@ -18,7 +18,7 @@ function ForgotPassword() {
   return (
     <Stack
       sx={{
-        width: "60%",
+        width:"56%",
         margin: "0 auto",
         textAlign: "left",
         position: "relative",
@@ -85,6 +85,7 @@ function ForgotPassword() {
         }}
       />
       <Typography
+      variant="subtitle2"
         sx={{
           textAlign: "left",
           textDecoration: "underline",

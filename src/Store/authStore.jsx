@@ -31,7 +31,9 @@ const useAuthenticationStore = create((set) => ({
       const result = await signInWithPopup(auth, googleProvider);
       set({ user: result.user });
       loginWithSpotify();
-      navigate("/home");
+      setTimeout(() => {
+        navigate("/home");
+      }, 3500);
     } catch (error) {
       set({ error: error.message });
     }

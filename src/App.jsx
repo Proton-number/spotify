@@ -11,6 +11,7 @@ import Switch from "@mui/material/Switch";
 import { styled } from "@mui/material/styles";
 import ForgotPassword from "./Components/Pages/ForgotPassword";
 import Callback from "./Components/Pages/Callback";
+import Layout from "./Components/Layout";
 
 function App() {
   console.log(import.meta.env.VITE_FIREBASE_APP_ID);
@@ -74,8 +75,7 @@ function App() {
   return (
     <>
       <Router>
-        <Nav />
-        <NavMobile />
+        <Layout />
         <Routes>
           <Route exact path="/" element={<Login IOSSwitch={IOSSwitch} />} />
           <Route exact path="/home" element={<Home />} />
