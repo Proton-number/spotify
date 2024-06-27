@@ -20,7 +20,7 @@ function Layout() {
           }}
           spacing={4}
         >
-          <Box sx={{ width: "26%", backgroundColor: "hsl(0, 0%, 5%)" }}>
+          <Box sx={{ width: "28%", backgroundColor: "hsl(0, 0%, 5%)" }}>
             <Nav />
           </Box>
           <Box sx={{ flexGrow: 1 }}>

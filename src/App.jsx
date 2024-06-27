@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Nav from "./Components/Nav";
@@ -12,6 +12,7 @@ import { styled } from "@mui/material/styles";
 import ForgotPassword from "./Components/Pages/ForgotPassword";
 import Callback from "./Components/Pages/Callback";
 import Layout from "./Components/Layout";
+import useAuthenticationStore from "./Store/authStore";
 
 function App() {
   console.log(import.meta.env.VITE_FIREBASE_APP_ID);
@@ -71,6 +72,15 @@ function App() {
       }),
     },
   }));
+
+  const setUser = useAuthenticationStore((state) => state.setUser);
+
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    if (storedUser) {
+      setUser(storedUser);
+    }
+  }, [setUser]);
 
   return (
     <>

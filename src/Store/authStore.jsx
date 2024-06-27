@@ -3,16 +3,23 @@ import { auth, googleProvider, facebookProvider } from "../Config/Firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  setPersistence,
+  browserSessionPersistence,
 } from "firebase/auth";
 import { create } from "zustand";
 import { loginWithSpotify } from "../Config/Spotify";
 import { sendPasswordResetEmail } from "firebase/auth";
 
 const useAuthenticationStore = create((set) => ({
-  user: null,
+  user: JSON.parse(localStorage.getItem("user")) || null,
   setUser: (user) => {
     console.log("Setting user:", user);
     set({ user });
+    if (user) {
+      localStorage.setItem("user", JSON.stringify(user));
+    } else {
+      localStorage.removeItem("user");
+    }
   },
   error: null,
   identifier: "",
@@ -28,12 +35,13 @@ const useAuthenticationStore = create((set) => ({
   signInWithGoogle: async (navigate) => {
     set({ error: null });
     try {
+      // Set browser session persistence before sign-in
+      await setPersistence(auth, browserSessionPersistence);
       const result = await signInWithPopup(auth, googleProvider);
       set({ user: result.user });
       loginWithSpotify();
-      setTimeout(() => {
-        navigate("/home");
-      }, 3500);
+      localStorage.setItem("user", JSON.stringify(result.user));
+      navigate("/home");
     } catch (error) {
       set({ error: error.message });
     }

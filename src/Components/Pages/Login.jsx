@@ -10,7 +10,7 @@ import {
   FormGroup,
   FormControlLabel,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -31,6 +31,7 @@ function Login({ IOSSwitch }) {
     setIdentifier,
     setPassword,
   } = useAuthenticationStore();
+
   const [showPassword, setShowPassword] = useState(true);
   const [createAccount, setCreateAccount] = useState(true);
   const [haveAccount, setHaveAccount] = useState(true);

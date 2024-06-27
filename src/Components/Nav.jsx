@@ -6,7 +6,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import LibraryMusicIcon from "@mui/icons-material/LibraryMusic";
 import AddIcon from "@mui/icons-material/Add";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 function Nav() {
   return (
     <Stack spacing={1}>
@@ -20,7 +20,7 @@ function Nav() {
         elevation={8}
       >
         <Stack spacing={1}>
-          <Link to="/home">
+          <Link to="/home" style={{ textDecoration: "none" }}>
             <Stack
               direction="row"
               spacing={2}
@@ -30,12 +30,12 @@ function Nav() {
               }}
             >
               <HomeIcon />
-              <Typography sx={{ textDecoration: "none" }}>
+              <Typography>
                 <b>Home</b>
               </Typography>
             </Stack>
           </Link>
-          <Link to="/search">
+          <Link to="/search" style={{ textDecoration: "none" }}>
             <Stack
               direction="row"
               spacing={2}
@@ -76,52 +76,52 @@ function Nav() {
             <Box
               sx={{
                 backgroundColor: "hsl(0, 0%, 15%)",
-                borderRadius: "55px",
-                padding: "6px",
+                borderRadius: "60px",
+                padding: "8px",
                 alignItems: "center",
                 display: "flex",
               }}
             >
-              <Typography variant="subtitle2">
+              <Typography variant="body2">
                 <b>Playlists</b>
               </Typography>
             </Box>
             <Box
               sx={{
                 backgroundColor: "hsl(0, 0%, 15%)",
-                borderRadius: "55px",
-                padding: "6px",
+                borderRadius: "60px",
+                padding: "8px",
                 alignItems: "center",
                 display: "flex",
               }}
             >
-              <Typography variant="subtitle2">
+              <Typography variant="body2">
                 <b>Artists</b>
               </Typography>
             </Box>
             <Box
               sx={{
                 backgroundColor: "hsl(0, 0%, 15%)",
-                borderRadius: "55px",
-                padding: "6px",
+                borderRadius: "60px",
+                padding: "8px",
                 alignItems: "center",
                 display: "flex",
               }}
             >
-              <Typography variant="subtitle2">
+              <Typography variant="body2">
                 <b> Albums</b>
               </Typography>
             </Box>
             <Box
               sx={{
                 backgroundColor: "hsl(0, 0%, 15%)",
-                borderRadius: "55px",
-                padding: "6px",
+                borderRadius: "60px",
+                padding: "8px",
                 alignItems: "center",
                 display: "flex",
               }}
             >
-              <Typography variant="subtitle2">
+              <Typography variant="body2">
                 {" "}
                 <b>Podcasts & Shows</b>
               </Typography>
@@ -132,8 +132,9 @@ function Nav() {
             sx={{ alignItems: "center", justifyContent: "space-between" }}
           >
             <SearchIcon />
-            <Stack>
+            <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
               <Typography variant="subtitle2">Recents</Typography>
+              <FormatListBulletedIcon />
             </Stack>
           </Stack>
         </Stack>
