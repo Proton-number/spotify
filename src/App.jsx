@@ -15,8 +15,6 @@ import Layout from "./Components/Layout";
 import useAuthenticationStore from "./Store/authStore";
 
 function App() {
-  console.log(import.meta.env.VITE_FIREBASE_APP_ID);
-
   const IOSSwitch = styled((props) => (
     <Switch
       focusVisibleClassName=".Mui-focusVisible"
@@ -85,14 +83,37 @@ function App() {
   return (
     <>
       <Router>
-        <Layout />
         <Routes>
           <Route exact path="/" element={<Login IOSSwitch={IOSSwitch} />} />
-          <Route exact path="/home" element={<Home />} />
-          <Route exact path="/search" element={<Search />} />
+          <Route
+            exact
+            path="/home"
+            element={
+              <Layout>
+                <Home />
+              </Layout>
+            }
+          />
+          <Route
+            exact
+            path="/search"
+            element={
+              <Layout>
+                <Search />
+              </Layout>
+            }
+          />
           <Route exact path="/library" element={<Library />} />
           <Route exact path="/forgotpassword" element={<ForgotPassword />} />
-          <Route exact path="/callback" element={<Callback />} />
+          <Route
+            exact
+            path="/callback"
+            element={
+              <Layout>
+                <Callback />
+              </Layout>
+            }
+          />
         </Routes>
       </Router>
     </>

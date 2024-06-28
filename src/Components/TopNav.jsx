@@ -17,7 +17,7 @@ function TopNav() {
     if (storedUser) {
       setUser(storedUser);
     }
-    setLoading(false); 
+    setLoading(false);
   }, [setUser]);
 
   if (loading) {
@@ -80,17 +80,19 @@ function TopNav() {
         >
           <NotificationsOutlinedIcon />
         </Box>
-        <Box
-          sx={{
-            display: "flex",
-            backgroundColor: "hsl(0, 0%, 15%)",
-            borderRadius: "50%",
-            justifyContent: "center",
-            padding: "5px",
-          }}
-        >
-          <Avatar src={user?.images?.[0]?.url || ""} />
-        </Box>
+        <IconButton>
+          <Box
+            sx={{
+              display: "flex",
+              backgroundColor: "hsl(0, 0%, 15%)",
+              borderRadius: "50%",
+              justifyContent: "center",
+              padding: "5px",
+            }}
+          >
+            <Avatar src={user?.images?.[0]?.url || ""} />
+          </Box>
+        </IconButton>
       </Stack>
     </Stack>
   );

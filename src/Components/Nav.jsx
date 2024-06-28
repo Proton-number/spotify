@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Typography, Stack, Paper, Box } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
@@ -7,7 +7,44 @@ import LibraryMusicIcon from "@mui/icons-material/LibraryMusic";
 import AddIcon from "@mui/icons-material/Add";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import useSpotifyStore from "../Store/SpotifyStore";
 function Nav() {
+  const {
+    likedSongs,
+    savedAlbums,
+    podcasts,
+    followedArtists,
+    fetchLikedSongs,
+    fetchSavedAlbums,
+    fetchPodcasts,
+    fetchFollowedArtists,
+    accessToken,
+  } = useSpotifyStore((state) => ({
+    likedSongs: state.likedSongs,
+    savedAlbums: state.savedAlbums,
+    podcasts: state.podcasts,
+    fetchLikedSongs: state.fetchLikedSongs,
+    fetchSavedAlbums: state.fetchSavedAlbums,
+    fetchPodcasts: state.fetchPodcasts,
+    fetchFollowedArtists: state.fetchFollowedArtists,
+    accessToken: state.accessToken,
+  }));
+
+  useEffect(() => {
+    if (accessToken) {
+      fetchLikedSongs();
+      fetchSavedAlbums();
+      fetchPodcasts();
+      fetchFollowedArtists();
+    }
+  }, [
+    accessToken,
+    fetchLikedSongs,
+    fetchSavedAlbums,
+    fetchPodcasts,
+    fetchFollowedArtists,
+  ]);
+
   return (
     <Stack spacing={1}>
       <Paper
@@ -71,8 +108,7 @@ function Nav() {
               <ArrowForwardIcon />
             </Stack>
           </Stack>
-
-          <Stack direction="row" spacing={2} sx={{ justifyContent: "center" }}>
+          <Stack direction="row" spacing={2}>
             <Box
               sx={{
                 backgroundColor: "hsl(0, 0%, 15%)",
@@ -136,6 +172,61 @@ function Nav() {
               <Typography variant="subtitle2">Recents</Typography>
               <FormatListBulletedIcon />
             </Stack>
+          </Stack>
+          <Stack
+            sx={{ textAlign: "left", maxHeight: "550px", overflowY: "auto" }}
+            spacing={2}
+          >
+            {savedAlbums.length > 0 ? (
+              savedAlbums.map((album) => (
+                <Stack
+                  direction="row"
+                  sx={{ alignItems: "Center" }}
+                  key={album.album.id}
+                  spacing={2}
+                >
+                  <Box
+                    component="img"
+                    src={album.album.images[0].url}
+                    alt={album.album.name}
+                    sx={{ width: { lg: "60px" } }}
+                  />
+                  <Stack>
+                    <Typography variant="body2">
+                      {" "}
+                      <b>{album.album.name}</b>
+                    </Typography>
+                    <Typography> {album.album.artists[0].name}</Typography>
+                  </Stack>
+                </Stack>
+              ))
+            ) : (
+              <li>Loading...</li>
+            )}
+
+            {podcasts.length > 0 ? (
+              podcasts.map((podcast) => (
+                <li key={podcast.show.id}>
+                  <Typography variant="body2">
+                    <b>{podcast.show.name}</b> - {podcast.show.publisher}
+                  </Typography>
+                </li>
+              ))
+            ) : (
+              <li>Loading...</li>
+            )}
+
+            {/* {followedArtists.length > 0 ? (
+              followedArtists.map((artists) => (
+                <li key={artists.show.id}>
+                  <Typography variant="body2">
+                    <b>{artists.artist.name}</b>
+                  </Typography>
+                </li>
+              ))
+            ) : (
+              <li>Loading...</li>
+            )} */}
           </Stack>
         </Stack>
       </Paper>

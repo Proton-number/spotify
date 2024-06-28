@@ -10,10 +10,9 @@ import { create } from "zustand";
 import { loginWithSpotify } from "../Config/Spotify";
 import { sendPasswordResetEmail } from "firebase/auth";
 
-const useAuthenticationStore = create((set) => ({
+export const useAuthenticationStore = create((set) => ({
   user: JSON.parse(localStorage.getItem("user")) || null,
   setUser: (user) => {
-    console.log("Setting user:", user);
     set({ user });
     if (user) {
       localStorage.setItem("user", JSON.stringify(user));
@@ -21,6 +20,7 @@ const useAuthenticationStore = create((set) => ({
       localStorage.removeItem("user");
     }
   },
+
   error: null,
   identifier: "",
   password: "",

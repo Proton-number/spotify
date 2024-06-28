@@ -17,6 +17,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import useAuthenticationStore from "../../Store/authStore";
 import { useNavigate, Link } from "react-router-dom";
 
+
 function Login({ IOSSwitch }) {
   const navigate = useNavigate();
   const {
@@ -163,7 +164,7 @@ function Login({ IOSSwitch }) {
             </Typography>
           }
           sx={{
-            width: "20%",
+            width: "17%",
             "& .MuiOutlinedInput-root": {
               "& fieldset": {
                 borderColor: "white",

@@ -5,28 +5,55 @@ import { useLocation } from "react-router-dom";
 import { Stack, Box } from "@mui/material";
 import TopNav from "./TopNav";
 
-function Layout() {
+function Layout({ children }) {
   const location = useLocation();
   const isLoginPage = location.pathname === "/";
+
   return (
     <>
       {!isLoginPage && (
-        <Stack
-          direction="row"
-          sx={{
-            alignItems: "flex-start",
-            justifyContent: "space-between",
-            width: "100%",
-          }}
-          spacing={4}
-        >
-          <Box sx={{ width: "28%", backgroundColor: "hsl(0, 0%, 5%)" }}>
+        <Box sx={{ display: "flex", height: "100vh" }}>
+          <Box
+            sx={{
+              width: "28%",
+              height: "100vh",
+              position: "fixed",
+              top: 14,
+              left: 12,
+            }}
+          >
             <Nav />
           </Box>
-          <Box sx={{ flexGrow: 1 }}>
-            <TopNav />
+
+          <Box
+            sx={{
+              marginLeft: "30%", // Adjust this according to the width of the Nav
+              display: "flex",
+              flexDirection: "column",
+              width: "72%",
+              overflowY: "auto",
+            }}
+          >
+            <Box
+              sx={{
+                position: "fixed",
+                top: 18,
+                width: "68%", // Same as the main content width
+              }}
+            >
+              <TopNav />
+            </Box>
+
+            <Box
+              sx={{
+                marginTop: "60px",
+                padding: "16px",
+              }}
+            >
+              {children}
+            </Box>
           </Box>
-        </Stack>
+        </Box>
       )}
       {!isLoginPage && <NavMobile />}
     </>
