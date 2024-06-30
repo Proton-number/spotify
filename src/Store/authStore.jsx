@@ -1,9 +1,4 @@
-import {
-  signInWithPopup,
-  fetchSignInMethodsForEmail,
-  EmailAuthProvider,
-  linkWithCredential,
-} from "firebase/auth";
+import { signInWithPopup } from "firebase/auth";
 import { auth, googleProvider, facebookProvider, db } from "../Config/Firebase";
 import {
   createUserWithEmailAndPassword,

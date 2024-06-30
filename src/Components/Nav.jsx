@@ -13,36 +13,73 @@ function Nav() {
     likedSongs,
     savedAlbums,
     podcasts,
-    followedArtists,
+    artists,
+    userPlaylists,
     fetchLikedSongs,
     fetchSavedAlbums,
-    fetchPodcasts,
-    fetchFollowedArtists,
+    fetchSavedPodcasts,
+    fetchSavedArtists,
+    fetchSavedPlaylists,
+    setSavedAlbums,
+    setPodcasts,
+    setArtists,
+    setUserPlaylists,
     accessToken,
   } = useSpotifyStore((state) => ({
     likedSongs: state.likedSongs,
     savedAlbums: state.savedAlbums,
     podcasts: state.podcasts,
+    artists: state.artists,
+    userPlaylists: state.userPlaylists,
     fetchLikedSongs: state.fetchLikedSongs,
     fetchSavedAlbums: state.fetchSavedAlbums,
-    fetchPodcasts: state.fetchPodcasts,
-    fetchFollowedArtists: state.fetchFollowedArtists,
+    fetchSavedPodcasts: state.fetchSavedPodcasts,
+    fetchSavedArtists: state.fetchSavedArtists,
+    fetchSavedPlaylists: state.fetchSavedPlaylists,
+    setSavedAlbums: state.setSavedAlbums,
+    setPodcasts: state.setPodcasts,
+    setArtists: state.setArtists,
+    setUserPlaylists: state.setUserPlaylists,
     accessToken: state.accessToken,
   }));
 
   useEffect(() => {
+    const storedAlbums = localStorage.getItem("savedAlbums");
+    if (storedAlbums) {
+      setSavedAlbums(JSON.parse(storedAlbums));
+    }
+
+    const storedPodcasts = localStorage.getItem("savedPodcasts");
+    if (storedPodcasts) {
+      setPodcasts(JSON.parse(storedPodcasts));
+    }
+
+    const storedArtists = localStorage.getItem("savedArtist");
+    if (storedArtists) {
+      setArtists(JSON.parse(storedArtists));
+    }
+
+    const storedPlaylists = localStorage.getItem("savedPlaylists");
+    if (storedPlaylists) {
+      setUserPlaylists(JSON.parse(storedPlaylists));
+    }
+
     if (accessToken) {
       fetchLikedSongs();
       fetchSavedAlbums();
-      fetchPodcasts();
-      fetchFollowedArtists();
+      fetchSavedPodcasts();
+      fetchSavedArtists();
+      fetchSavedPlaylists();
     }
   }, [
     accessToken,
     fetchLikedSongs,
     fetchSavedAlbums,
-    fetchPodcasts,
-    fetchFollowedArtists,
+    fetchSavedPodcasts,
+    fetchSavedArtists,
+    fetchSavedPlaylists,
+    setSavedAlbums,
+    setPodcasts,
   ]);
 
   return (
@@ -116,6 +153,7 @@ function Nav() {
                 padding: "8px",
                 alignItems: "center",
                 display: "flex",
+                cursor: "pointer",
               }}
             >
               <Typography variant="body2">
@@ -129,6 +167,7 @@ function Nav() {
                 padding: "8px",
                 alignItems: "center",
                 display: "flex",
+                cursor: "pointer",
               }}
             >
               <Typography variant="body2">
@@ -142,6 +181,7 @@ function Nav() {
                 padding: "8px",
                 alignItems: "center",
                 display: "flex",
+                cursor: "pointer",
               }}
             >
               <Typography variant="body2">
@@ -155,6 +195,7 @@ function Nav() {
                 padding: "8px",
                 alignItems: "center",
                 display: "flex",
+                cursor: "pointer",
               }}
             >
               <Typography variant="body2">
@@ -177,11 +218,11 @@ function Nav() {
             sx={{ textAlign: "left", maxHeight: "550px", overflowY: "auto" }}
             spacing={2}
           >
-            {savedAlbums.length > 0 ? (
+            {savedAlbums && savedAlbums.length > 0 ? (
               savedAlbums.map((album) => (
                 <Stack
                   direction="row"
-                  sx={{ alignItems: "Center" }}
+                  sx={{ alignItems: "center", cursor: "pointer" }}
                   key={album.album.id}
                   spacing={2}
                 >
@@ -204,29 +245,76 @@ function Nav() {
               <li>Loading...</li>
             )}
 
-            {podcasts.length > 0 ? (
+            {podcasts && podcasts.length > 0 ? (
               podcasts.map((podcast) => (
-                <li key={podcast.show.id}>
-                  <Typography variant="body2">
-                    <b>{podcast.show.name}</b> - {podcast.show.publisher}
-                  </Typography>
-                </li>
+                <Stack
+                  key={podcast.show.id}
+                  direction="row"
+                  sx={{ alignItems: "center", cursor: "pointer" }}
+                  spacing={2}
+                >
+                  <Box
+                    component="img"
+                    src={podcast.show.images[0].url}
+                    sx={{ width: { lg: "60px" } }}
+                    alt={podcast.show.name}
+                  />
+                  <Stack>
+                    <Typography variant="body2">
+                      <b>{podcast.show.name}</b>
+                    </Typography>
+                    <Typography>{podcast.show.publisher}</Typography>
+                  </Stack>
+                </Stack>
               ))
             ) : (
               <li>Loading...</li>
             )}
 
-            {/* {followedArtists.length > 0 ? (
-              followedArtists.map((artists) => (
-                <li key={artists.show.id}>
+            {artists && artists.length > 0 ? (
+              artists.map((artist) => (
+                <Stack
+                  key={artist.id}
+                  direction="row"
+                  sx={{ alignItems: "center", cursor: "pointer" }}
+                  alt={artist.name}
+                  spacing={2}
+                >
+                  <Box
+                    component="img"
+                    src={artist.images[0].url}
+                    sx={{ width: { lg: "60px" } }}
+                  />
                   <Typography variant="body2">
-                    <b>{artists.artist.name}</b>
+                    <b>{artist.name}</b>
                   </Typography>
-                </li>
+                </Stack>
               ))
             ) : (
               <li>Loading...</li>
-            )} */}
+            )}
+
+            {userPlaylists && userPlaylists.length > 0 ? (
+              userPlaylists.map((playlist) => (
+                <Stack
+                  key={playlist.id}
+                  direction="row"
+                  sx={{ alignItems: "center", cursor: "pointer" }}
+                  spacing={2}
+                >
+                  <Box
+                    component="img"
+                    src={playlist.images[0].url}
+                    sx={{ width: { lg: "60px" } }}
+                  />
+                  <Typography variant="body2">
+                    <b>{playlist.name}</b>
+                  </Typography>
+                </Stack>
+              ))
+            ) : (
+              <li>Loading...</li>
+            )}
           </Stack>
         </Stack>
       </Paper>
