@@ -1,24 +1,23 @@
-import { signInWithPopup } from "firebase/auth";
-import { auth, googleProvider, facebookProvider } from "../Config/Firebase";
+import {
+  signInWithPopup,
+  fetchSignInMethodsForEmail,
+  EmailAuthProvider,
+  linkWithCredential,
+} from "firebase/auth";
+import { auth, googleProvider, facebookProvider, db } from "../Config/Firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  setPersistence,
-  browserSessionPersistence,
 } from "firebase/auth";
 import { create } from "zustand";
 import { loginWithSpotify } from "../Config/Spotify";
 import { sendPasswordResetEmail } from "firebase/auth";
+import { collection, addDoc } from "firebase/firestore";
 
 export const useAuthenticationStore = create((set) => ({
-  user: JSON.parse(localStorage.getItem("user")) || null,
+  user: null,
   setUser: (user) => {
     set({ user });
-    if (user) {
-      localStorage.setItem("user", JSON.stringify(user));
-    } else {
-      localStorage.removeItem("user");
-    }
   },
 
   error: null,
@@ -35,13 +34,30 @@ export const useAuthenticationStore = create((set) => ({
   signInWithGoogle: async (navigate) => {
     set({ error: null });
     try {
-      // Set browser session persistence before sign-in
-      await setPersistence(auth, browserSessionPersistence);
+      // ... existing Google sign-in logic
+
       const result = await signInWithPopup(auth, googleProvider);
       set({ user: result.user });
-      loginWithSpotify();
-      localStorage.setItem("user", JSON.stringify(result.user));
-      navigate("/home");
+      console.log("Google user data:", result.user);
+
+      const spotifyData = await loginWithSpotify();
+      console.log("Spotify data:", spotifyData);
+
+      const userRef = collection(db, "users");
+      await addDoc(userRef, {
+        uid: result.user.uid,
+        displayName: result.user.displayName,
+        email: result.user.email,
+        spotifyData,
+      })
+        .then(() => {
+          console.log("Firestore write successful");
+          navigate("/home");
+        })
+        .catch((error) => {
+          console.error("Firestore write error:", error);
+          set({ error: error.message });
+        });
     } catch (error) {
       set({ error: error.message });
     }
@@ -53,14 +69,31 @@ export const useAuthenticationStore = create((set) => ({
     try {
       const result = await signInWithPopup(auth, facebookProvider);
       set({ user: result.user });
-      loginWithSpotify();
-      navigate("/home");
+      console.log("Facebook user data:", result.user);
+
+      const spotifyData = await loginWithSpotify();
+      console.log("Spotify data:", spotifyData);
+
+      const userRef = collection(db, "users");
+      await addDoc(userRef, {
+        uid: result.user.uid,
+        displayName: result.user.displayName,
+        email: result.user.email,
+        spotifyData,
+      })
+        .then(() => {
+          console.log("Firestore write successful");
+          navigate("/home");
+        })
+        .catch((error) => {
+          console.error("Firestore write error:", error);
+          set({ error: error.message });
+        });
     } catch (error) {
+      console.error("Error during Facebook sign-in:", error.message);
       set({ error: error.message });
     }
   },
-
-  //Apple Sign In
 
   //Email and Password Sign in
   signInWithEmailAndPassword: async (email, password, navigate) => {
@@ -68,8 +101,24 @@ export const useAuthenticationStore = create((set) => ({
     try {
       const result = await signInWithEmailAndPassword(auth, email, password);
       set({ user: result.user });
-      loginWithSpotify();
-      navigate("/home");
+      const spotifyData = await loginWithSpotify();
+      console.log("Spotify data:", spotifyData);
+
+      const userRef = collection(db, "users");
+      await addDoc(userRef, {
+        uid: result.user.uid,
+        displayName: result.user.displayName,
+        email: result.user.email,
+        spotifyData,
+      })
+        .then(() => {
+          console.log("Firestore write successful");
+          navigate("/home");
+        })
+        .catch((error) => {
+          console.error("Firestore write error:", error);
+          set({ error: error.message });
+        });
     } catch (error) {
       console.error("Error signing in:", error.response?.data || error.message);
       set({ error: error.message });
@@ -85,10 +134,26 @@ export const useAuthenticationStore = create((set) => ({
         password
       );
       set({ user: result.user });
-      loginWithSpotify();
-      navigate("/home");
+      const spotifyData = await loginWithSpotify();
+      console.log("Spotify data:", spotifyData);
+
+      const userRef = collection(db, "users");
+      await addDoc(userRef, {
+        uid: result.user.uid,
+        displayName: result.user.displayName,
+        email: result.user.email,
+        spotifyData,
+      })
+        .then(() => {
+          console.log("Firestore write successful");
+          navigate("/home");
+        })
+        .catch((error) => {
+          console.error("Firestore write error:", error);
+          set({ error: error.message });
+        });
     } catch (error) {
-      console.error("Error signing in:", error.response?.data || error.message);
+      console.error("Error signing up:", error.response?.data || error.message);
       set({ error: error.message });
     }
   },

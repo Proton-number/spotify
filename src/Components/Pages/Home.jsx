@@ -6,9 +6,9 @@ function Home() {
   const { user } = useAuthenticationStore();
   return (
     <Stack>
-      Welcome home! {user.display_name} Lorem ipsum, dolor sit amet consectetur
-      adipisicing elit. Odio voluptates tenetur ut modi eius vitae nemo ipsa
-      accusantium accusamus dolorum. Deleniti sunt doloribus voluptate
+      Welcome home! {user?.display_name || "Guest"} Lorem ipsum, dolor sit amet
+      consectetur adipisicing elit. Odio voluptates tenetur ut modi eius vitae
+      nemo ipsa accusantium accusamus dolorum. Deleniti sunt doloribus voluptate
       cupiditate totam rem ipsam earum aspernatur. Atque iusto laborum et
       mollitia sed at voluptatem enim soluta molestias deserunt. Eligendi
       delectus nisi quis sit itaque dolorum explicabo dolores reprehenderit
