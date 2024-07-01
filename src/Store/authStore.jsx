@@ -3,6 +3,7 @@ import { auth, googleProvider, facebookProvider, db } from "../Config/Firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signOut,
 } from "firebase/auth";
 import { create } from "zustand";
 import { loginWithSpotify } from "../Config/Spotify";
@@ -158,14 +159,27 @@ export const useAuthenticationStore = create((set) => ({
     set({ error: null, sending: true, email: "" });
     try {
       await sendPasswordResetEmail(auth, email);
-      setTimeout(() => {
-        // navigate("/");
-      }, 3500);
+      navigate("/");
     } catch (error) {
       console.error("Error sending password reset email:", error.message);
       set({ error: error.message });
     } finally {
       set({ sending: false });
+    }
+  },
+
+  //Sign out logic
+  signOutHandler: async (navigate) => {
+    try {
+      await signOut(auth);
+      set({
+        user: null,
+      });
+      localStorage.clear();
+      navigate("/");
+    } catch (error) {
+      console.log("Error signing out..", error.message);
+      set({ error: error.message });
     }
   },
 }));
