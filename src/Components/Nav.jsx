@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Typography, Stack, Paper, Box } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
@@ -9,6 +9,7 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import useSpotifyStore from "../Store/SpotifyStore";
 function Nav() {
+  const [filter, setFilter] = useState("All");
   const {
     likedSongs,
     savedAlbums,
@@ -82,6 +83,14 @@ function Nav() {
     setPodcasts,
   ]);
 
+  const handleFilterClick = (newFilter) => {
+    if (filter === newFilter) {
+      setFilter("All");
+    } else {
+      setFilter(newFilter);
+    }
+  };
+
   return (
     <Stack spacing={1}>
       <Paper
@@ -129,6 +138,8 @@ function Nav() {
           color: "white",
           backgroundColor: "hsl(60, 2%, 9%)",
           borderRadius: "12px",
+          height: "80vh", // Set a specific height
+       
         }}
         elevation={8}
       >
@@ -147,6 +158,7 @@ function Nav() {
           </Stack>
           <Stack direction="row" spacing={2}>
             <Box
+              onClick={() => handleFilterClick("Playlists")}
               sx={{
                 backgroundColor: "hsl(0, 0%, 15%)",
                 borderRadius: "60px",
@@ -154,6 +166,7 @@ function Nav() {
                 alignItems: "center",
                 display: "flex",
                 cursor: "pointer",
+                opacity: filter === "Playlists" ? "100" : "70%",
               }}
             >
               <Typography variant="body2">
@@ -161,6 +174,7 @@ function Nav() {
               </Typography>
             </Box>
             <Box
+              onClick={() => handleFilterClick("Artists")}
               sx={{
                 backgroundColor: "hsl(0, 0%, 15%)",
                 borderRadius: "60px",
@@ -168,6 +182,7 @@ function Nav() {
                 alignItems: "center",
                 display: "flex",
                 cursor: "pointer",
+                opacity: filter === "Artists" ? "100" : "70%",
               }}
             >
               <Typography variant="body2">
@@ -175,6 +190,7 @@ function Nav() {
               </Typography>
             </Box>
             <Box
+              onClick={() => handleFilterClick("Albums")}
               sx={{
                 backgroundColor: "hsl(0, 0%, 15%)",
                 borderRadius: "60px",
@@ -182,6 +198,7 @@ function Nav() {
                 alignItems: "center",
                 display: "flex",
                 cursor: "pointer",
+                opacity: filter === "Albums" ? "100" : "70%",
               }}
             >
               <Typography variant="body2">
@@ -189,6 +206,7 @@ function Nav() {
               </Typography>
             </Box>
             <Box
+              onClick={() => handleFilterClick("Podcasts")}
               sx={{
                 backgroundColor: "hsl(0, 0%, 15%)",
                 borderRadius: "60px",
@@ -196,6 +214,7 @@ function Nav() {
                 alignItems: "center",
                 display: "flex",
                 cursor: "pointer",
+                opacity: filter === "Podcasts" ? "100" : "70%",
               }}
             >
               <Typography variant="body2">
@@ -218,7 +237,9 @@ function Nav() {
             sx={{ textAlign: "left", maxHeight: "550px", overflowY: "auto" }}
             spacing={2}
           >
-            {savedAlbums && savedAlbums.length > 0 ? (
+            {(filter === "All" || filter === "Albums") &&
+            savedAlbums &&
+            savedAlbums.length > 0 ? (
               savedAlbums.map((album) => (
                 <Stack
                   direction="row"
@@ -227,6 +248,7 @@ function Nav() {
                   spacing={2}
                 >
                   <Box
+                    loading="lazy"
                     component="img"
                     src={album.album.images[0].url}
                     alt={album.album.name}
@@ -241,11 +263,13 @@ function Nav() {
                   </Stack>
                 </Stack>
               ))
-            ) : (
+            ) : filter === "Albums" ? (
               <li>Loading...</li>
-            )}
+            ) : null}
 
-            {podcasts && podcasts.length > 0 ? (
+            {(filter === "All" || filter === "Podcasts") &&
+            podcasts &&
+            podcasts.length > 0 ? (
               podcasts.map((podcast) => (
                 <Stack
                   key={podcast.show.id}
@@ -254,6 +278,7 @@ function Nav() {
                   spacing={2}
                 >
                   <Box
+                    loading="lazy"
                     component="img"
                     src={podcast.show.images[0].url}
                     sx={{ width: { lg: "60px" } }}
@@ -267,11 +292,13 @@ function Nav() {
                   </Stack>
                 </Stack>
               ))
-            ) : (
+            ) : filter === "Podcasts" ? (
               <li>Loading...</li>
-            )}
+            ) : null}
 
-            {artists && artists.length > 0 ? (
+            {(filter === "All" || filter === "Artists") &&
+            artists &&
+            artists.length > 0 ? (
               artists.map((artist) => (
                 <Stack
                   key={artist.id}
@@ -281,6 +308,7 @@ function Nav() {
                   spacing={2}
                 >
                   <Box
+                    loading="lazy"
                     component="img"
                     src={artist.images[0].url}
                     sx={{ width: { lg: "60px" } }}
@@ -290,11 +318,13 @@ function Nav() {
                   </Typography>
                 </Stack>
               ))
-            ) : (
+            ) : filter === "Artists" ? (
               <li>Loading...</li>
-            )}
+            ) : null}
 
-            {userPlaylists && userPlaylists.length > 0 ? (
+            {(filter === "All" || filter === "Playlists") &&
+            userPlaylists &&
+            userPlaylists.length > 0 ? (
               userPlaylists.map((playlist) => (
                 <Stack
                   key={playlist.id}
@@ -303,6 +333,7 @@ function Nav() {
                   spacing={2}
                 >
                   <Box
+                    loading="lazy"
                     component="img"
                     src={playlist.images[0].url}
                     sx={{ width: { lg: "60px" } }}
@@ -312,9 +343,9 @@ function Nav() {
                   </Typography>
                 </Stack>
               ))
-            ) : (
+            ) : filter === "Playlists" ? (
               <li>Loading...</li>
-            )}
+            ) : null}
           </Stack>
         </Stack>
       </Paper>

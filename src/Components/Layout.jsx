@@ -2,8 +2,9 @@ import React from "react";
 import Nav from "./Nav";
 import NavMobile from "./NavMobile";
 import { useLocation } from "react-router-dom";
-import { Stack, Box } from "@mui/material";
+import { Stack, Box, Paper } from "@mui/material";
 import TopNav from "./TopNav";
+import Player from "./Player";
 
 function Layout({ children }) {
   const location = useLocation();
@@ -15,11 +16,23 @@ function Layout({ children }) {
         <Box sx={{ display: "flex", height: "100vh" }}>
           <Box
             sx={{
+              position: "fixed",
+              bottom: 0,
+              width: "100%",
+              backgroundColor: "hsl(0, 0%, 0%)",
+              padding: "30px",
+              zIndex: 3,
+            }}
+          >
+            <Player />
+          </Box>
+          <Box
+            sx={{
               width: "28%",
-              height: "100vh",
               position: "fixed",
               top: 14,
               left: 12,
+              zIndex: 2,
             }}
           >
             <Nav />
@@ -34,24 +47,34 @@ function Layout({ children }) {
               overflowY: "auto",
             }}
           >
-            <Box
+            <Paper
               sx={{
-                position: "fixed",
-                top: 18,
-                width: "68%", // Same as the main content width
+                backgroundColor: "hsl(0, 0%, 9%)",
+                color: "white",
+                marginTop: "16px",
+                padding: "10px",
+                borderRadius: "12px",
               }}
             >
-              <TopNav />
-            </Box>
+              <Box
+                sx={{
+                  position: "fixed",
+                  top: 18,
+                  width: "68%", // Same as the main content width
+                }}
+              >
+                <TopNav />
+              </Box>
 
-            <Box
-              sx={{
-                marginTop: "80px",
-                padding: "16px",
-              }}
-            >
-              {children}
-            </Box>
+              <Box
+                sx={{
+                  marginTop: "80px",
+                  padding: "16px",
+                }}
+              >
+                {children}
+              </Box>
+            </Paper>
           </Box>
         </Box>
       )}

@@ -11,7 +11,7 @@ import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import useAuthenticationStore from "../Store/authStore";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
 function TopNav() {
@@ -36,7 +36,7 @@ function TopNav() {
   }
 
   if (!user) {
-    return null; // Or a different placeholder if no user is found
+    return null;
   }
 
   const handleGoBack = () => {
@@ -76,7 +76,12 @@ function TopNav() {
               padding: "5px",
             }}
           >
-            <KeyboardArrowLeftIcon sx={{ fontSize: 30, cursor: "pointer" }} />
+            <KeyboardArrowLeftIcon
+              sx={{
+                fontSize: 30,
+                cursor: "pointer",
+              }}
+            />
           </Box>
         </Link>
         <Link to="#" onClick={handleForward} style={{ color: "white" }}>
@@ -89,7 +94,12 @@ function TopNav() {
               padding: "5px",
             }}
           >
-            <KeyboardArrowRightIcon sx={{ fontSize: 30 }} />
+            <KeyboardArrowRightIcon
+              sx={{
+                fontSize: 30,
+                cursor: "pointer",
+              }}
+            />
           </Box>
         </Link>
       </Stack>

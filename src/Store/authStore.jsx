@@ -13,6 +13,7 @@ import { collection, addDoc } from "firebase/firestore";
 export const useAuthenticationStore = create((set) => ({
   user: null,
   setUser: (user) => {
+    localStorage.setItem("user", JSON.stringify(user));
     set({ user });
   },
 
