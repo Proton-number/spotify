@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { Typography, Stack, Paper, Box } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import SearchIcon from "@mui/icons-material/Search";
-import LibraryMusicIcon from "@mui/icons-material/LibraryMusic";
 import AddIcon from "@mui/icons-material/Add";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
@@ -145,7 +144,22 @@ function Nav() {
         <Stack spacing={1.5} sx={{ height: { lg: "71.5vh" } }}>
           <Stack direction="row" sx={{ justifyContent: "space-between" }}>
             <Stack direction="row" spacing={2} sx={{ alignItems: "center" }}>
-              <LibraryMusicIcon />
+              <svg
+                data-encore-id="icon"
+                role="img"
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                class="Svg-sc-ytk21e-0 bneLcE"
+                id="SVG 4"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                width="24px"
+              >
+                <path
+                  fill="white"
+                  d="M3 22a1 1 0 0 1-1-1V3a1 1 0 0 1 2 0v18a1 1 0 0 1-1 1zM15.5 2.134A1 1 0 0 0 14 3v18a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V6.464a1 1 0 0 0-.5-.866l-6-3.464zM9 2a1 1 0 0 0-1 1v18a1 1 0 1 0 2 0V3a1 1 0 0 0-1-1z"
+                ></path>
+              </svg>
               <Typography>
                 <b>Your library</b>
               </Typography>
@@ -251,14 +265,17 @@ function Nav() {
                     component="img"
                     src={album.album.images[0].url}
                     alt={album.album.name}
-                    sx={{ width: { lg: "60px" } }}
+                    sx={{ width: { lg: "60px" }, borderRadius: "10px" }}
                   />
                   <Stack>
                     <Typography variant="body2">
                       {" "}
                       <b>{album.album.name}</b>
                     </Typography>
-                    <Typography> {album.album.artists[0].name}</Typography>
+                    <Typography variant="subtitle2" fontSize=".78rem">
+                      {" "}
+                      Album . {album.album.artists[0].name}
+                    </Typography>
                   </Stack>
                 </Stack>
               ))
@@ -287,7 +304,10 @@ function Nav() {
                     <Typography variant="body2">
                       <b>{podcast.show.name}</b>
                     </Typography>
-                    <Typography>{podcast.show.publisher}</Typography>
+                    <Typography variant="subtitle2" fontSize=".78rem">
+                      {" "}
+                      Podcast .{podcast.show.publisher}
+                    </Typography>
                   </Stack>
                 </Stack>
               ))
@@ -310,7 +330,7 @@ function Nav() {
                     loading="lazy"
                     component="img"
                     src={artist.images[0].url}
-                    sx={{ width: { lg: "60px" } }}
+                    sx={{ width: { lg: "60px" }, borderRadius: "50%" }}
                   />
                   <Typography variant="body2">
                     <b>{artist.name}</b>
