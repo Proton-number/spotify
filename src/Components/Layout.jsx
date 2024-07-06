@@ -5,6 +5,7 @@ import { useLocation } from "react-router-dom";
 import { Stack, Box, Paper } from "@mui/material";
 import TopNav from "./TopNav";
 import Player from "./Player";
+import { motion } from "framer-motion";
 
 function Layout({ children }) {
   const location = useLocation();
@@ -18,9 +19,9 @@ function Layout({ children }) {
             sx={{
               position: "fixed",
               bottom: 0,
-              width: "100%",
+              width: { sm: "98.6%", lg: "99.36%" },
               backgroundColor: "hsl(0, 0%, 0%)",
-              padding: "30px",
+              padding: "5px",
               zIndex: 3,
             }}
           >
@@ -33,6 +34,7 @@ function Layout({ children }) {
               top: 14,
               left: 12,
               zIndex: 2,
+              overflow: 0,
             }}
           >
             <Nav />

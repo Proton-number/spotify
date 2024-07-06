@@ -138,12 +138,11 @@ function Nav() {
           color: "white",
           backgroundColor: "hsl(60, 2%, 9%)",
           borderRadius: "12px",
-          height: "80vh", // Set a specific height
-       
+          height: { lg: "71.5vh" },
         }}
         elevation={8}
       >
-        <Stack spacing={1.5}>
+        <Stack spacing={1.5} sx={{ height: { lg: "71.5vh" } }}>
           <Stack direction="row" sx={{ justifyContent: "space-between" }}>
             <Stack direction="row" spacing={2} sx={{ alignItems: "center" }}>
               <LibraryMusicIcon />
