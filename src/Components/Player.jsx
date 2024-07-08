@@ -12,6 +12,7 @@ import VolumeUpRounded from "@mui/icons-material/VolumeUpRounded";
 import VolumeDownRounded from "@mui/icons-material/VolumeDownRounded";
 import PlayerStore from "../Store/playerStore";
 import { motion } from "framer-motion";
+import useSpotifyStore from "../Store/SpotifyStore";
 
 function Player() {
   const {
@@ -24,31 +25,30 @@ function Player() {
     repeatColor,
     setRepeatColor,
     currentSong,
-    setCurrentSong,
     fetchCurrentSong,
-    accessToken,
+    pauseCurrentSong,
+    playCurrentSong,
   } = PlayerStore();
-
-  const play = () => {
-    setIsPlayed(false);
-  };
-
-  const pause = () => {
-    setIsPlayed(true);
-  };
+  const accessToken = useSpotifyStore((state) => state.accessToken);
 
   useEffect(() => {
-    const storedCurrentSong = localStorage.getItem("Current song");
-    if (storedCurrentSong) {
-      setCurrentSong(JSON.parse(storedCurrentSong));
-    }
-
     if (accessToken) {
-      fetchCurrentSong().catch((error) =>
-        console.error("Error in useEffect:", error)
-      );
+      fetchCurrentSong();
+    } else {
+      console.log("No access token found");
     }
-  }, [accessToken, fetchCurrentSong, setCurrentSong]);
+  }, [fetchCurrentSong, accessToken]);
+
+  // Poll for song changes every 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (accessToken) {
+        fetchCurrentSong(accessToken);
+      }
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, [accessToken, fetchCurrentSong]);
 
   return (
     <Stack
@@ -56,9 +56,15 @@ function Player() {
       sx={{ alignItems: "center", justifyContent: "space-around" }}
     >
       <Stack direction="row" spacing={2} sx={{ alignItems: "center" }}>
-        <Box
-          sx={{ width: "60px", height: "60px", backgroundColor: "lightgreen" }}
-        />
+        {currentSong && currentSong.album && currentSong.album.images && (
+          <Box
+            component="img"
+            sx={{ width: "60px", height: "60px" }}
+            src={currentSong.album.images[0].url}
+            alt={currentSong.name}
+          />
+        )}
+
         <Stack spacing={1}>
           <Typography>
             {currentSong ? currentSong.name : "Song name"}
@@ -80,7 +86,7 @@ function Player() {
           </IconButton>
         )}
       </Stack>
-      <Stack sx={{ flex: 0.8, mx: 30 }}>
+      <Stack sx={{ flex: 0.7, mx: 20 }}>
         <Stack direction="row" justifyContent="center">
           <IconButton onClick={() => setShuffleColor(!shuffleColor)}>
             <ShuffleIcon
@@ -100,11 +106,11 @@ function Player() {
             />
           </IconButton>
           {isPlayed ? (
-            <IconButton onClick={play}>
+            <IconButton onClick={playCurrentSong}>
               <PlayCircleIcon sx={{ color: "white" }} fontSize="large" />
             </IconButton>
           ) : (
-            <IconButton onClick={pause}>
+            <IconButton onClick={pauseCurrentSong}>
               <PauseCircleIcon sx={{ color: "white" }} fontSize="large" />
             </IconButton>
           )}
@@ -200,7 +206,7 @@ function Player() {
           className="Svg-sc-ytk21e-0 dYnaPI"
           id="SVG 20"
           xmlns="http://www.w3.org/2000/svg"
-          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlnsXlink="http://www.w3.org/1999/xlink"
           width="20px"
         >
           <path
@@ -215,7 +221,7 @@ function Player() {
           role="img"
           aria-hidden="true"
           viewBox="0 0 16 16"
-          class="Svg-sc-ytk21e-0 dYnaPI"
+          className="Svg-sc-ytk21e-0 dYnaPI"
           id="SVG 24"
           xmlns="http://www.w3.org/2000/svg"
           xmlns:xlink="http://www.w3.org/1999/xlink"

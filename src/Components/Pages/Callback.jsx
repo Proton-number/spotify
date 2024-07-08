@@ -13,6 +13,8 @@ const Callback = () => {
     const params = new URLSearchParams(hash.substring(1));
     const accessToken = params.get("access_token");
 
+    console.log("Retrieved access token:", accessToken);
+
     if (accessToken) {
       setAccessToken(accessToken);
       // Fetch user info from Spotify API

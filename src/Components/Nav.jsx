@@ -149,10 +149,10 @@ function Nav() {
                 role="img"
                 aria-hidden="true"
                 viewBox="0 0 24 24"
-                class="Svg-sc-ytk21e-0 bneLcE"
+                className="Svg-sc-ytk21e-0 bneLcE"
                 id="SVG 4"
                 xmlns="http://www.w3.org/2000/svg"
-                xmlns:xlink="http://www.w3.org/1999/xlink"
+                xmlnsXlink="http://www.w3.org/1999/xlink"
                 width="24px"
               >
                 <path
