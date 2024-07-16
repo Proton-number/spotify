@@ -14,12 +14,31 @@ const PlayerStore = create((set) => ({
 
   playCurrentSong: async () => {
     try {
-      await spotifyApi.play();
+      const accessToken = useSpotifyStore.getState().accessToken;
+      console.log("Access Token:", accessToken);
+      spotifyApi.setAccessToken(accessToken);
+  
+      const devices = await spotifyApi.getMyDevices();
+      console.log("Devices:", devices.body.devices);
+      if (devices.body.devices.length === 0) {
+        console.error("No active device available for playback");
+        return;
+      }
+  
+      const activeDevice = devices.body.devices.find(device => device.is_active);
+      if (!activeDevice) {
+        console.error("No active device found. Please start playing on one of your devices.");
+        return;
+      }
+  
+      await spotifyApi.play({ device_id: activeDevice.id });
       set({ isPlayed: false }); // update state to indicate it's playing
     } catch (error) {
       console.error("Error playing song:", error);
     }
   },
+  
+  
 
   pauseCurrentSong: async () => {
     try {

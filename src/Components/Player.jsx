@@ -53,9 +53,13 @@ function Player() {
   return (
     <Stack
       direction="row"
-      sx={{ alignItems: "center", justifyContent: "space-around" }}
+      sx={{ alignItems: "center", justifyContent: "space-evenly" }}
     >
-      <Stack direction="row" spacing={2} sx={{ alignItems: "center" }}>
+      <Stack
+        direction="row"
+        spacing={2}
+        sx={{ alignItems: "center", justifyContent: "center" }}
+      >
         {currentSong && currentSong.album && currentSong.album.images && (
           <Box
             component="img"
@@ -66,9 +70,11 @@ function Player() {
         )}
 
         <Stack spacing={1}>
-          <Typography>
-            {currentSong ? currentSong.name : "Song name"}
-          </Typography>
+          <Box>
+            <Typography>
+              {currentSong ? currentSong.name : "Song name"}
+            </Typography>
+          </Box>
           <Typography>
             {currentSong ? currentSong.artists[0].name : "Artist"}
           </Typography>
@@ -86,7 +92,7 @@ function Player() {
           </IconButton>
         )}
       </Stack>
-      <Stack sx={{ flex: 0.7, mx: 20 }}>
+      <Stack sx={{ flex: 0.9, mx: 15 }}>
         <Stack direction="row" justifyContent="center">
           <IconButton onClick={() => setShuffleColor(!shuffleColor)}>
             <ShuffleIcon
