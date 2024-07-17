@@ -10,7 +10,7 @@ import { loginWithSpotify } from "../Config/Spotify";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { collection, addDoc } from "firebase/firestore";
 
-export const useAuthenticationStore = create((set) => ({
+ const useAuthenticationStore = create((set) => ({
   user: null,
   setUser: (user) => {
     localStorage.setItem("user", JSON.stringify(user));

@@ -274,7 +274,7 @@ function Nav() {
                     </Typography>
                     <Typography variant="subtitle2" fontSize=".78rem">
                       {" "}
-                      Album . {album.album.artists[0].name}
+                      Album  • {album.album.artists[0].name}
                     </Typography>
                   </Stack>
                 </Stack>
@@ -306,7 +306,7 @@ function Nav() {
                     </Typography>
                     <Typography variant="subtitle2" fontSize=".78rem">
                       {" "}
-                      Podcast .{podcast.show.publisher}
+                      Podcast  • {podcast.show.publisher}
                     </Typography>
                   </Stack>
                 </Stack>

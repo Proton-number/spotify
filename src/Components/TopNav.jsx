@@ -73,7 +73,7 @@ function TopNav() {
               backgroundColor: "hsl(0, 0%, 15%)",
               borderRadius: "50%",
               justifyContent: "center",
-              padding: "5px",
+              padding: "3px",
             }}
           >
             <KeyboardArrowLeftIcon
@@ -91,7 +91,7 @@ function TopNav() {
               backgroundColor: "hsl(0, 0%, 15%)",
               borderRadius: "50%",
               justifyContent: "center",
-              padding: "5px",
+              padding: "3px",
             }}
           >
             <KeyboardArrowRightIcon

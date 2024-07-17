@@ -81,18 +81,18 @@ function Player() {
         </Stack>
         {isFavourite ? (
           <IconButton onClick={() => setIsFavorite(false)}>
-            <FavoriteIcon sx={{ color: "lightgreen" }} fontSize="large" />
+            <FavoriteIcon sx={{ color: "lightgreen" }} fontSize="medium" />
           </IconButton>
         ) : (
           <IconButton onClick={() => setIsFavorite(true)}>
             <FavoriteBorderOutlinedIcon
               sx={{ color: "lightgreen" }}
-              fontSize="large"
+              fontSize="medium"
             />
           </IconButton>
         )}
       </Stack>
-      <Stack sx={{ flex: 0.9, mx: 15 }}>
+      <Stack sx={{ flex: 0.9, mx: 25 }}>
         <Stack direction="row" justifyContent="center">
           <IconButton onClick={() => setShuffleColor(!shuffleColor)}>
             <ShuffleIcon
@@ -101,30 +101,30 @@ function Player() {
                 opacity: 0.7,
                 "&:hover": { opacity: 1 },
               }}
-              fontSize="large"
+              fontSize="medium"
             />
           </IconButton>
 
           <IconButton>
             <SkipPreviousIcon
               sx={{ color: "white", opacity: 0.7, "&:hover": { opacity: 1 } }}
-              fontSize="large"
+              fontSize="medium"
             />
           </IconButton>
           {isPlayed ? (
             <IconButton onClick={playCurrentSong}>
-              <PlayCircleIcon sx={{ color: "white" }} fontSize="large" />
+              <PlayCircleIcon sx={{ color: "white" }} fontSize="medium" />
             </IconButton>
           ) : (
             <IconButton onClick={pauseCurrentSong}>
-              <PauseCircleIcon sx={{ color: "white" }} fontSize="large" />
+              <PauseCircleIcon sx={{ color: "white" }} fontSize="medium" />
             </IconButton>
           )}
 
           <IconButton>
             <SkipNextIcon
               sx={{ color: "white", opacity: 0.7, "&:hover": { opacity: 1 } }}
-              fontSize="large"
+              fontSize="medium"
             />
           </IconButton>
           <IconButton onClick={() => setRepeatColor(!repeatColor)}>
@@ -134,7 +134,7 @@ function Player() {
                 opacity: 0.7,
                 "&:hover": { opacity: 1 },
               }}
-              fontSize="large"
+              fontSize="medium"
             />
           </IconButton>
         </Stack>
