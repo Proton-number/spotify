@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import useAuthenticationStore from "../../Store/authStore";
 import {
   Stack,
@@ -7,15 +7,39 @@ import {
   createTheme,
   ThemeProvider,
 } from "@mui/material";
+import homeStore from "../../Store/homeStore";
 
 function Home() {
   const { user } = useAuthenticationStore();
+  const {
+    recentlyPlayed,
+    setRecentlyPlayed,
+    fetchRecentlyPlayed,
+    madeForYou,
+    setMadeForYou,
+    fetchMadeForYou,
+  } = homeStore();
 
   const theme = createTheme({
     typography: {
-      fontFamily: "Kanit, sans-serif", // Specify your font family
+      fontFamily: "Kanit, sans-serif",
     },
   });
+
+  useEffect(() => {
+    const storedRecentlyPlayed = localStorage.getItem("recentlyPlayed");
+    if (storedRecentlyPlayed) {
+      setRecentlyPlayed(JSON.parse(storedRecentlyPlayed));
+    }
+
+    const storedMadeForYou = localStorage.getItem("madeForYou");
+    if (storedMadeForYou) {
+      setRecentlyPlayed(JSON.parse(storedMadeForYou));
+    }
+
+    fetchRecentlyPlayed();
+    fetchMadeForYou();
+  }, [fetchRecentlyPlayed, fetchMadeForYou]);
 
   return (
     <Stack spacing={4}>
@@ -42,45 +66,49 @@ function Home() {
           sx={{
             width: "fit-content",
           }}
+          direction="row"
         >
-          <Box
-            sx={{
-              "&:hover": {
-                backgroundColor: "grey",
-                padding: "10px",
-                borderRadius: "3px",
-                cursor: "pointer",
-                transition: " padding 0.2s ease-in",
-              },
-            }}
-          >
+          {madeForYou.map((made, index) => (
             <Box
               sx={{
-                backgroundColor: "lightblue",
-                width: "150px",
-                height: "150px",
+                "&:hover": {
+                  backgroundColor: "grey",
+                  padding: "10px",
+                  borderRadius: "3px",
+                  cursor: "pointer",
+                  transition: " padding 0.2s ease-in",
+                },
               }}
-            />
-            <Typography>Daily Mix 1</Typography>
-            <Box
-              sx={{
-                width: 120,
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-              }}
+              key={index}
             >
-              <Typography
-                variant="body2"
+              <Box
                 sx={{
+                  backgroundColor: "lightblue",
+                  width: "150px",
+                  height: "150px",
+                }}
+              />
+              {/* <Typography>{made.name}</Typography> */}
+              <Box
+                sx={{
+                  width: 120,
                   overflow: "hidden",
                   textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
                 }}
               >
-                Drake Doja Cat, Adele and more
-              </Typography>
+                <Typography
+                  variant="body2"
+                  sx={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  Drake Doja Cat, Adele and more
+                </Typography>
+              </Box>
             </Box>
-          </Box>
+          ))}
         </Stack>
       </Stack>
 
@@ -107,47 +135,54 @@ function Home() {
           sx={{
             width: "fit-content",
           }}
+          direction="row"
         >
-          <Box
-            sx={{
-              "&:hover": {
-                backgroundColor: "grey",
-                borderRadius: "25px",
-                padding: "10px",
-                borderRadius: "3px",
-                cursor: "pointer",
-                transition: " padding 0.2s ease-in",
-              },
-            }}
-          >
+          {recentlyPlayed.map((track, index) => (
             <Box
               sx={{
-                backgroundColor: "pink",
-                width: "150px",
-                height: "150px",
+                "&:hover": {
+                  backgroundColor: "grey",
+                  borderRadius: "25px",
+                  padding: "10px",
+                  borderRadius: "3px",
+                  cursor: "pointer",
+                  transition: " padding 0.2s ease-in",
+                },
               }}
-            />
-            <Box
-              sx={{
-                width: 150,
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
-              }}
+              key={index}
             >
-              <Typography
-                variant="body2"
+              <Box
+                component="img"
+                src={track?.track?.album?.images?.[0]?.url || ""}
                 sx={{
+                  width: "150px",
+                  height: "150px",
+                }}
+              />
+              <Box
+                sx={{
+                  width: 150,
                   overflow: "hidden",
                   textOverflow: "ellipsis",
-                  whiteSpace: "nowrap", // Ensure text doesn't wrap to the next line
+                  whiteSpace: "nowrap",
                 }}
               >
-                HIT ME HARD AND SOFT
+                <Typography
+                  variant="body2"
+                  sx={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {track.track.name}
+                </Typography>
+              </Box>
+              <Typography variant="body2">
+                {track.track.artists[0].name}
               </Typography>
             </Box>
-            <Typography variant="body2">by Dacron</Typography>
-          </Box>
+          ))}
         </Stack>
       </Stack>
 

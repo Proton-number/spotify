@@ -272,7 +272,7 @@ function Login({ IOSSwitch }) {
               borderRadius: "25px",
               padding: "14px",
               color: "black",
-              width: "120%",
+              width: "22%",
               backgroundColor: "hsl(147, 100%, 43%)",
               "&:hover": {
                 backgroundColor: "hsl(158, 100%, 34%)",
