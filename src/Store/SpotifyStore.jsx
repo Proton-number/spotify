@@ -108,8 +108,6 @@ const useSpotifyStore = create((set) => ({
       console.error("Error fetching playlists:", error);
     }
   },
-
-
 }));
 
 export default useSpotifyStore;

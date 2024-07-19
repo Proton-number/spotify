@@ -18,6 +18,9 @@ function Home() {
     madeForYou,
     setMadeForYou,
     fetchMadeForYou,
+    // uniquely,
+    // setUniquely,
+    // fetchUniquely,
   } = homeStore();
 
   const theme = createTheme({
@@ -34,11 +37,17 @@ function Home() {
 
     const storedMadeForYou = localStorage.getItem("madeForYou");
     if (storedMadeForYou) {
-      setRecentlyPlayed(JSON.parse(storedMadeForYou));
+      setMadeForYou(JSON.parse(storedMadeForYou));
     }
+
+    // const storedUniquely = localStorage.getItem("Uniquely");
+    // if (storedUniquely) {
+    //   setUniquely(JSON.parse(storedUniquely));
+    // }
 
     fetchRecentlyPlayed();
     fetchMadeForYou();
+    // fetchUniquely();
   }, [fetchRecentlyPlayed, fetchMadeForYou]);
 
   return (
@@ -71,10 +80,11 @@ function Home() {
           {madeForYou.map((made, index) => (
             <Box
               sx={{
+                backgroundColor: "transparent",
+                padding: "10px",
+                borderRadius: "5px",
                 "&:hover": {
-                  backgroundColor: "grey",
-                  padding: "10px",
-                  borderRadius: "3px",
+                  backgroundColor: "hsl(0, 0%, 15%)",
                   cursor: "pointer",
                   transition: " padding 0.2s ease-in",
                 },
@@ -82,13 +92,14 @@ function Home() {
               key={index}
             >
               <Box
+                component="img"
                 sx={{
-                  backgroundColor: "lightblue",
                   width: "150px",
                   height: "150px",
                 }}
+                src={made.images[0]?.url}
               />
-              {/* <Typography>{made.name}</Typography> */}
+              <Typography>{made.name}</Typography>
               <Box
                 sx={{
                   width: 120,
@@ -104,7 +115,7 @@ function Home() {
                     whiteSpace: "nowrap",
                   }}
                 >
-                  Drake Doja Cat, Adele and more
+                  {made.description}
                 </Typography>
               </Box>
             </Box>
@@ -140,11 +151,11 @@ function Home() {
           {recentlyPlayed.map((track, index) => (
             <Box
               sx={{
+                backgroundColor: "transparent",
+                padding: "10px",
+                borderRadius: "5px",
                 "&:hover": {
-                  backgroundColor: "grey",
-                  borderRadius: "25px",
-                  padding: "10px",
-                  borderRadius: "3px",
+                  backgroundColor: "hsl(0, 0%, 15%)",
                   cursor: "pointer",
                   transition: " padding 0.2s ease-in",
                 },
@@ -175,11 +186,11 @@ function Home() {
                     whiteSpace: "nowrap",
                   }}
                 >
-                  {track.track.name}
+                  {track?.track?.name}
                 </Typography>
               </Box>
               <Typography variant="body2">
-                {track.track.artists[0].name}
+                {track?.track?.artists[0]?.name}
               </Typography>
             </Box>
           ))}
@@ -187,7 +198,7 @@ function Home() {
       </Stack>
 
       <Stack spacing={2}>
-        <Box
+        <Stack
           sx={{
             width: "fit-content",
           }}
@@ -203,34 +214,40 @@ function Home() {
               Uniquely yours
             </Typography>
           </ThemeProvider>
-        </Box>
+        </Stack>
         <Stack
           spacing={1}
           sx={{
             width: "fit-content",
           }}
+          direction="row"
         >
-          <Box
-            sx={{
-              "&:hover": {
-                backgroundColor: "grey",
-                padding: "10px",
-                borderRadius: "3px",
-                cursor: "pointer",
-                transition: " padding 0.2s ease-in",
-              },
-            }}
-          >
+          {/* {uniquely.map((unique, index) => (
             <Box
-              sx={{
-                backgroundColor: "lightgreen",
-                width: "150px",
-                height: "150px",
+               sx={{
+                backgroundColor: "transparent",
+                padding: "10px",
+                borderRadius: "5px",
+                "&:hover": {
+                  backgroundColor: "hsl(0, 0%, 15%)",
+                  cursor: "pointer",
+                  transition: " padding 0.2s ease-in",
+                },
               }}
-            />
-            <Typography variant="body2">daylist • sensuaL</Typography>
-            <Typography variant="body2">you listen to...</Typography>
-          </Box>
+              key={index}
+            >
+              <Box
+                component="img"
+                sx={{
+                  width: "150px",
+                  height: "150px",
+                }}
+                src={unique.images[0]?.url}
+              />
+              <Typography variant="body2">daylist • sensuaL</Typography>
+              <Typography variant="body2">you listen to...</Typography>
+            </Box>
+          ))} */}
         </Stack>
       </Stack>
     </Stack>
