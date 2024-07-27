@@ -1,5 +1,5 @@
 import { Box, Stack, Typography, IconButton, Slider } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
@@ -25,30 +25,32 @@ function Player() {
     repeatColor,
     setRepeatColor,
     currentSong,
+    setCurrentSong,
     fetchCurrentSong,
     pauseCurrentSong,
     playCurrentSong,
   } = PlayerStore();
-  const accessToken = useSpotifyStore((state) => state.accessToken);
 
   useEffect(() => {
-    if (accessToken) {
-      fetchCurrentSong();
-    } else {
-      console.log("No access token found");
+    const storedCurrentSong = localStorage.getItem("currentSong");
+    if (storedCurrentSong) {
+      setCurrentSong(JSON.parse(storedCurrentSong));
     }
-  }, [fetchCurrentSong, accessToken]);
 
-  // Poll for song changes every 5 seconds
+    fetchCurrentSong();
+  }, [fetchCurrentSong]);
+
+  const memoizedFetchCurrentSong = useCallback(() => {
+    fetchCurrentSong();
+  }, [fetchCurrentSong]);
+
   useEffect(() => {
     const interval = setInterval(() => {
-      if (accessToken) {
-        fetchCurrentSong(accessToken);
-      }
-    }, 2000);
+      memoizedFetchCurrentSong();
+    }, 2000); // Increase interval duration to 2 seconds
 
     return () => clearInterval(interval);
-  }, [accessToken, fetchCurrentSong]);
+  }, [memoizedFetchCurrentSong]);
 
   return (
     <Stack
@@ -64,18 +66,18 @@ function Player() {
           <Box
             component="img"
             sx={{ width: "60px", height: "60px" }}
-            src={currentSong.album.images[0].url}
+            src={currentSong.album.images[0].url || ""}
             alt={currentSong.name}
           />
         )}
 
-        <Stack spacing={1}>
+        <Stack>
           <Box>
-            <Typography>
+            <Typography sx={{ fontWeight: "bold" }}>
               {currentSong ? currentSong.name : "Song name"}
             </Typography>
           </Box>
-          <Typography>
+          <Typography variant="body2" sx={{ opacity: "70%" }}>
             {currentSong ? currentSong.artists[0].name : "Artist"}
           </Typography>
         </Stack>
@@ -111,7 +113,7 @@ function Player() {
               fontSize="medium"
             />
           </IconButton>
-          {isPlayed ? (
+          {isPlayed && !currentSong ? (
             <IconButton onClick={playCurrentSong}>
               <PlayCircleIcon sx={{ color: "white" }} fontSize="medium" />
             </IconButton>

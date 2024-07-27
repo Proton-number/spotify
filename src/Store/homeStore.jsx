@@ -50,7 +50,7 @@ const homeStore = create((set) => ({
     }
     try {
       spotifyApi.setAccessToken(accessToken);
-      const data = await spotifyApi.getFeaturedPlaylists();
+      const data = await spotifyApi.getFeaturedPlaylists({ limit: 5 });
       console.log("Fetched featured playlists:", data.body.playlists.items);
       const featuredPlaylists = data.body.playlists.items;
       set({ madeForYou: featuredPlaylists });

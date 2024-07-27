@@ -17,28 +17,30 @@ const PlayerStore = create((set) => ({
       const accessToken = useSpotifyStore.getState().accessToken;
       console.log("Access Token:", accessToken);
       spotifyApi.setAccessToken(accessToken);
-  
+
       const devices = await spotifyApi.getMyDevices();
       console.log("Devices:", devices.body.devices);
       if (devices.body.devices.length === 0) {
         console.error("No active device available for playback");
         return;
       }
-  
-      const activeDevice = devices.body.devices.find(device => device.is_active);
+
+      const activeDevice = devices.body.devices.find(
+        (device) => device.is_active
+      );
       if (!activeDevice) {
-        console.error("No active device found. Please start playing on one of your devices.");
+        console.error(
+          "No active device found. Please start playing on one of your devices."
+        );
         return;
       }
-  
+
       await spotifyApi.play({ device_id: activeDevice.id });
       set({ isPlayed: false }); // update state to indicate it's playing
     } catch (error) {
       console.error("Error playing song:", error);
     }
   },
-  
-  
 
   pauseCurrentSong: async () => {
     try {
@@ -64,6 +66,8 @@ const PlayerStore = create((set) => ({
 
   currentSong: null,
   setCurrentSong: (currentSong) => {
+    console.log("Setting currentSong:", currentSong);
+    localStorage.setItem("currentSong", JSON.stringify(currentSong));
     set({ currentSong });
   },
 
@@ -77,12 +81,28 @@ const PlayerStore = create((set) => ({
     try {
       spotifyApi.setAccessToken(accessToken);
       console.log("Fetching current song....");
-      const data = await spotifyApi.getMyCurrentPlayingTrack();
-      if (data.body && data.body.item) {
-        const currentSong = data.body.item;
+
+      // Fetch the currently playing track
+      const currentPlayingData = await spotifyApi.getMyCurrentPlayingTrack();
+      if (currentPlayingData.body && currentPlayingData.body.item) {
+        const currentSong = currentPlayingData.body.item;
         set({ currentSong });
+        return; // Exit if we found a currently playing track
+      }
+
+      // If no current track, fetch recently played tracks
+      console.log(
+        "No current song playing. Fetching recently played tracks..."
+      );
+      const recentlyPlayedData = await spotifyApi.getMyRecentlyPlayedTracks({
+        limit: 1,
+      });
+      if (recentlyPlayedData.body && recentlyPlayedData.body.items.length > 0) {
+        const lastPlayedTrack = recentlyPlayedData.body.items[0].track;
+        set({ currentSong: lastPlayedTrack });
+        localStorage.setItem("currentSong", JSON.stringify(lastPlayedTrack));
       } else {
-        console.warn("No current song playing.");
+        console.warn("No recently played tracks found.");
         set({ currentSong: null });
       }
     } catch (error) {

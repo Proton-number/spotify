@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import useAuthenticationStore from "../../Store/authStore";
 import {
   Stack,
@@ -6,6 +6,7 @@ import {
   Box,
   createTheme,
   ThemeProvider,
+  Grid,
 } from "@mui/material";
 import homeStore from "../../Store/homeStore";
 
@@ -41,12 +42,27 @@ function Home() {
     fetchMadeForYou();
   }, [fetchRecentlyPlayed, fetchMadeForYou]);
 
+  const memoizedFetchRecentlyPlayed = useCallback(() => {
+    fetchRecentlyPlayed();
+  }, [fetchRecentlyPlayed]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      memoizedFetchRecentlyPlayed();
+    }, 2000); // Update interval to 2 seconds
+
+    return () => clearInterval(interval);
+  }, [memoizedFetchRecentlyPlayed]);
+
   return (
     <Stack spacing={4}>
       <Stack spacing={2}>
         <Box
           sx={{
-            width: "fit-content",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            width: "100%",
           }}
         >
           <ThemeProvider theme={theme}>
@@ -60,19 +76,28 @@ function Home() {
               Made for {user?.display_name || "Guest"}
             </Typography>
           </ThemeProvider>
+          <Typography
+            variant="body2"
+            sx={{
+              opacity: "70%",
+              "&:hover": { textDecoration: "underline" },
+              cursor: "pointer",
+            }}
+          >
+            Show all
+          </Typography>
         </Box>
-        <Stack
-          spacing={1}
-          sx={{
-            width: "fit-content",
-          }}
-          direction="row"
-        >
+        <Grid spacing={1.5} container direction="row">
           {madeForYou.map((made, index) => (
-            <Box
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              md={4}
+              lg={2.4}
               sx={{
                 backgroundColor: "transparent",
-                padding: "10px",
+                padding: "21px",
                 borderRadius: "5px",
                 "&:hover": {
                   backgroundColor: "hsl(0, 0%, 15%)",
@@ -85,8 +110,8 @@ function Home() {
               <Box
                 component="img"
                 sx={{
-                  width: "150px",
-                  height: "150px",
+                  width: "190px",
+                  height: "190px",
                 }}
                 src={made.images[0]?.url}
               />
@@ -104,20 +129,24 @@ function Home() {
                     overflow: "hidden",
                     textOverflow: "ellipsis",
                     whiteSpace: "nowrap",
+                    opacity: "70%",
                   }}
                 >
                   {made.description}
                 </Typography>
               </Box>
-            </Box>
+            </Grid>
           ))}
-        </Stack>
+        </Grid>
       </Stack>
 
       <Stack spacing={2}>
         <Box
           sx={{
-            width: "fit-content",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            width: "100%",
           }}
         >
           <ThemeProvider theme={theme}>
@@ -131,19 +160,28 @@ function Home() {
               Recently played
             </Typography>
           </ThemeProvider>
+          <Typography
+            variant="body2"
+            sx={{
+              opacity: "70%",
+              "&:hover": { textDecoration: "underline" },
+              cursor: "pointer",
+            }}
+          >
+            Show all
+          </Typography>
         </Box>
-        <Stack
-          spacing={1}
-          sx={{
-            width: "fit-content",
-          }}
-          direction="row"
-        >
+        <Grid spacing={1.5} container direction="row">
           {recentlyPlayed.map((track, index) => (
-            <Box
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              md={4}
+              lg={2.4}
               sx={{
                 backgroundColor: "transparent",
-                padding: "10px",
+                padding: "21px",
                 borderRadius: "5px",
                 "&:hover": {
                   backgroundColor: "hsl(0, 0%, 15%)",
@@ -157,8 +195,8 @@ function Home() {
                 component="img"
                 src={track?.track?.album?.images?.[0]?.url || ""}
                 sx={{
-                  width: "150px",
-                  height: "150px",
+                  width: "190px",
+                  height: "190px",
                 }}
               />
               <Box
@@ -175,17 +213,18 @@ function Home() {
                     overflow: "hidden",
                     textOverflow: "ellipsis",
                     whiteSpace: "nowrap",
+                    fontWeight: "bold",
                   }}
                 >
                   {track?.track?.name}
                 </Typography>
               </Box>
-              <Typography variant="body2">
+              <Typography variant="body2" sx={{ opacity: "70%" }}>
                 {track?.track?.artists[0]?.name}
               </Typography>
-            </Box>
+            </Grid>
           ))}
-        </Stack>
+        </Grid>
       </Stack>
     </Stack>
   );
