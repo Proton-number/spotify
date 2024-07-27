@@ -18,9 +18,6 @@ function Home() {
     madeForYou,
     setMadeForYou,
     fetchMadeForYou,
-    // uniquely,
-    // setUniquely,
-    // fetchUniquely,
   } = homeStore();
 
   const theme = createTheme({
@@ -40,14 +37,8 @@ function Home() {
       setMadeForYou(JSON.parse(storedMadeForYou));
     }
 
-    // const storedUniquely = localStorage.getItem("Uniquely");
-    // if (storedUniquely) {
-    //   setUniquely(JSON.parse(storedUniquely));
-    // }
-
     fetchRecentlyPlayed();
     fetchMadeForYou();
-    // fetchUniquely();
   }, [fetchRecentlyPlayed, fetchMadeForYou]);
 
   return (
@@ -194,60 +185,6 @@ function Home() {
               </Typography>
             </Box>
           ))}
-        </Stack>
-      </Stack>
-
-      <Stack spacing={2}>
-        <Stack
-          sx={{
-            width: "fit-content",
-          }}
-        >
-          <ThemeProvider theme={theme}>
-            <Typography
-              variant="h4"
-              sx={{
-                "&:hover": { textDecoration: "underline" },
-                cursor: "pointer",
-              }}
-            >
-              Uniquely yours
-            </Typography>
-          </ThemeProvider>
-        </Stack>
-        <Stack
-          spacing={1}
-          sx={{
-            width: "fit-content",
-          }}
-          direction="row"
-        >
-          {/* {uniquely.map((unique, index) => (
-            <Box
-               sx={{
-                backgroundColor: "transparent",
-                padding: "10px",
-                borderRadius: "5px",
-                "&:hover": {
-                  backgroundColor: "hsl(0, 0%, 15%)",
-                  cursor: "pointer",
-                  transition: " padding 0.2s ease-in",
-                },
-              }}
-              key={index}
-            >
-              <Box
-                component="img"
-                sx={{
-                  width: "150px",
-                  height: "150px",
-                }}
-                src={unique.images[0]?.url}
-              />
-              <Typography variant="body2">daylist • sensuaL</Typography>
-              <Typography variant="body2">you listen to...</Typography>
-            </Box>
-          ))} */}
         </Stack>
       </Stack>
     </Stack>

@@ -59,32 +59,6 @@ const homeStore = create((set) => ({
       console.error("Error fetching featured playlists:", error);
     }
   },
-
-  uniquely: [],
-  setUniquely: (uniquely) => {
-    console.log("Setting Uniquely:", uniquely);
-    localStorage.setItem("Uniquely", JSON.stringify(uniquely));
-    set({ uniquely });
-  },
-
-//   fetchUniquely: async () => {
-//     const accessToken = useSpotifyStore.getState().accessToken;
-//     if (!accessToken) {
-//       console.error("No access token available");
-//       return;
-//     }
-//     try {
-//       spotifyApi.setAccessToken(accessToken);
-//       console.log("FetchingUniquely....");
-//       const data = await spotifyApi.getNewReleases();
-//       console.log("Fetched Uniquely:", data.body.items);
-//       const unique = data.body.items;
-//       set({ uniquely: unique });
-//       localStorage.setItem("Uniquely", JSON.stringify(unique));
-//     } catch (error) {
-//       console.error("Error fetching Uniquely:", error);
-//     }
-//   },
 }));
 
 export default homeStore;
