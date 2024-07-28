@@ -113,7 +113,7 @@ function Player() {
               fontSize="medium"
             />
           </IconButton>
-          {isPlayed && !currentSong ? (
+          {!isPlayed ? (
             <IconButton onClick={playCurrentSong}>
               <PlayCircleIcon sx={{ color: "white" }} fontSize="medium" />
             </IconButton>

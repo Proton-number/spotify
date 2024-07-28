@@ -49,7 +49,7 @@ function Home() {
   useEffect(() => {
     const interval = setInterval(() => {
       memoizedFetchRecentlyPlayed();
-    }, 2000); // Update interval to 2 seconds
+    }, 1000);
 
     return () => clearInterval(interval);
   }, [memoizedFetchRecentlyPlayed]);

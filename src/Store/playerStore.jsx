@@ -9,7 +9,7 @@ const spotifyApi = new SpotifyWebApi({
 });
 
 const PlayerStore = create((set) => ({
-  isPlayed: true,
+  isPlayed: false,
   setIsPlayed: (isPlayed) => set({ isPlayed }),
 
   playCurrentSong: async () => {
@@ -36,7 +36,7 @@ const PlayerStore = create((set) => ({
       }
 
       await spotifyApi.play({ device_id: activeDevice.id });
-      set({ isPlayed: false }); // update state to indicate it's playing
+      set({ isPlayed: true }); // update state to indicate it's playing
     } catch (error) {
       console.error("Error playing song:", error);
     }
@@ -45,7 +45,7 @@ const PlayerStore = create((set) => ({
   pauseCurrentSong: async () => {
     try {
       await spotifyApi.pause();
-      set({ isPlayed: true }); // update state to indicate it's paused
+      set({ isPlayed: false }); // update state to indicate it's paused
     } catch (error) {
       console.error("Error pausing song:", error);
     }
@@ -80,34 +80,31 @@ const PlayerStore = create((set) => ({
 
     try {
       spotifyApi.setAccessToken(accessToken);
-      console.log("Fetching current song....");
 
-      // Fetch the currently playing track
       const currentPlayingData = await spotifyApi.getMyCurrentPlayingTrack();
       if (currentPlayingData.body && currentPlayingData.body.item) {
         const currentSong = currentPlayingData.body.item;
         set({ currentSong });
-        return; // Exit if we found a currently playing track
+        set({ isPlayed: true });
+        return;
       }
 
-      // If no current track, fetch recently played tracks
-      console.log(
-        "No current song playing. Fetching recently played tracks..."
-      );
       const recentlyPlayedData = await spotifyApi.getMyRecentlyPlayedTracks({
         limit: 1,
       });
       if (recentlyPlayedData.body && recentlyPlayedData.body.items.length > 0) {
         const lastPlayedTrack = recentlyPlayedData.body.items[0].track;
         set({ currentSong: lastPlayedTrack });
+        set({ isPlayed: false });
         localStorage.setItem("currentSong", JSON.stringify(lastPlayedTrack));
       } else {
-        console.warn("No recently played tracks found.");
         set({ currentSong: null });
+        set({ isPlayed: false });
       }
     } catch (error) {
       console.error("Error fetching current song:", error);
       set({ currentSong: null });
+      set({ isPlayed: false });
     }
   },
 }));
