@@ -21,6 +21,7 @@ import searchStore from "../Store/searchStore";
 
 function TopNav() {
   const navigate = useNavigate();
+  const { inputValue, setInputValue } = searchStore();
   const user = useAuthenticationStore((state) => state.user);
   const setUser = useAuthenticationStore((state) => state.setUser);
   const [loading, setLoading] = useState(true);
@@ -29,7 +30,6 @@ function TopNav() {
     signOutHandler: state.signOutHandler,
   }));
 
-  const { inputValue, setInputValue } = searchStore();
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));

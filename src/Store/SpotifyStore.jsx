@@ -36,7 +36,7 @@ const useSpotifyStore = create((set) => ({
   artists: [],
   setArtists: (artists) => {
     console.log("Setting artists:", artists);
-    localStorage.setItem("Saved Artists", JSON.stringify(artists));
+    localStorage.setItem("savedArtists", JSON.stringify(artists));
     set({ artists });
   },
 
@@ -44,10 +44,11 @@ const useSpotifyStore = create((set) => ({
   accessToken: null,
   setAccessToken: (token) => {
     spotifyApi.setAccessToken(token);
+    localStorage.setItem("spotifyAccessToken", token); // Store token in local storage
     set({ accessToken: token });
   },
 
-  //FETCHING DATA FROM SPOTIFY
+  // FETCHING DATA FROM SPOTIFY
   fetchLikedSongs: async () => {
     try {
       console.log("Fetching liked songs...");
@@ -67,7 +68,7 @@ const useSpotifyStore = create((set) => ({
       localStorage.setItem("savedAlbums", JSON.stringify(data.body.items));
       set({ savedAlbums: data.body.items });
     } catch (error) {
-      console.error("Error fetching liked songs:", error);
+      console.error("Error fetching saved albums:", error);
     }
   },
 
@@ -89,7 +90,7 @@ const useSpotifyStore = create((set) => ({
       const data = await spotifyApi.getFollowedArtists();
       console.log("Fetched Saved Artists Data:", data.body);
       const artists = data.body.artists.items;
-      localStorage.setItem("savedArtist", JSON.stringify(artists));
+      localStorage.setItem("savedArtists", JSON.stringify(artists));
       set({ artists });
     } catch (error) {
       console.error("Error fetching artists:", error);
@@ -108,8 +109,17 @@ const useSpotifyStore = create((set) => ({
       console.error("Error fetching playlists:", error);
     }
   },
-
-
 }));
+
+// Initialize the store with the token from local storage if it exists
+const initializeStore = () => {
+  const accessToken = localStorage.getItem("spotifyAccessToken");
+  if (accessToken) {
+    spotifyApi.setAccessToken(accessToken);
+    useSpotifyStore.setState({ accessToken });
+  }
+};
+
+initializeStore();
 
 export default useSpotifyStore;

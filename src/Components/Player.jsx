@@ -36,7 +36,6 @@ function Player() {
     if (storedCurrentSong) {
       setCurrentSong(JSON.parse(storedCurrentSong));
     }
-
     fetchCurrentSong();
   }, [fetchCurrentSong]);
 
@@ -47,7 +46,7 @@ function Player() {
   useEffect(() => {
     const interval = setInterval(() => {
       memoizedFetchCurrentSong();
-    }, 2000); // Increase interval duration to 2 seconds
+    }, 5000); // Increase to 5 seconds or more
 
     return () => clearInterval(interval);
   }, [memoizedFetchCurrentSong]);
@@ -110,23 +109,23 @@ function Player() {
           <IconButton>
             <SkipPreviousIcon
               sx={{ color: "white", opacity: 0.7, "&:hover": { opacity: 1 } }}
-              fontSize="medium"
+              fontSize="large"
             />
           </IconButton>
-          {!isPlayed ? (
+          {isPlayed ? (
             <IconButton onClick={playCurrentSong}>
-              <PlayCircleIcon sx={{ color: "white" }} fontSize="medium" />
+              <PlayCircleIcon sx={{ color: "white" }} fontSize="large" />
             </IconButton>
           ) : (
             <IconButton onClick={pauseCurrentSong}>
-              <PauseCircleIcon sx={{ color: "white" }} fontSize="medium" />
+              <PauseCircleIcon sx={{ color: "white" }} fontSize="large" />
             </IconButton>
           )}
 
           <IconButton>
             <SkipNextIcon
               sx={{ color: "white", opacity: 0.7, "&:hover": { opacity: 1 } }}
-              fontSize="medium"
+              fontSize="large"
             />
           </IconButton>
           <IconButton onClick={() => setRepeatColor(!repeatColor)}>
