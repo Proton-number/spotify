@@ -29,7 +29,16 @@ function Player() {
     fetchCurrentSong,
     pauseCurrentSong,
     playCurrentSong,
+    checkIfLiked,
+    likeCurrentSong,
+    unlikeCurrentSong,
   } = PlayerStore();
+
+  useEffect(() => {
+    if (currentSong) {
+      checkIfLiked(currentSong.id);
+    }
+  }, [currentSong, checkIfLiked]);
 
   useEffect(() => {
     const storedCurrentSong = localStorage.getItem("currentSong");
@@ -39,17 +48,26 @@ function Player() {
     fetchCurrentSong();
   }, [fetchCurrentSong]);
 
-  const memoizedFetchCurrentSong = useCallback(() => {
+  const memorizedFetchCurrentSong = useCallback(() => {
     fetchCurrentSong();
   }, [fetchCurrentSong]);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      memoizedFetchCurrentSong();
-    }, 5000); // Increase to 5 seconds or more
+      memorizedFetchCurrentSong();
+    }, 1000);
 
     return () => clearInterval(interval);
-  }, [memoizedFetchCurrentSong]);
+  }, [memorizedFetchCurrentSong]);
+
+  const handleLikeToggle = async () => {
+    if (isFavourite) {
+      await unlikeCurrentSong();
+    } else {
+      await likeCurrentSong();
+    }
+    fetchCurrentSong();
+  };
 
   return (
     <Stack
@@ -80,18 +98,16 @@ function Player() {
             {currentSong ? currentSong.artists[0].name : "Artist"}
           </Typography>
         </Stack>
-        {isFavourite ? (
-          <IconButton onClick={() => setIsFavorite(false)}>
+        <IconButton onClick={handleLikeToggle}>
+          {isFavourite ? (
             <FavoriteIcon sx={{ color: "lightgreen" }} fontSize="medium" />
-          </IconButton>
-        ) : (
-          <IconButton onClick={() => setIsFavorite(true)}>
+          ) : (
             <FavoriteBorderOutlinedIcon
               sx={{ color: "lightgreen" }}
               fontSize="medium"
             />
-          </IconButton>
-        )}
+          )}
+        </IconButton>
       </Stack>
       <Stack sx={{ flex: 0.9, mx: 25 }}>
         <Stack direction="row" justifyContent="center">

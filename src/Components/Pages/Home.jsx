@@ -42,17 +42,17 @@ function Home() {
     fetchMadeForYou();
   }, [fetchRecentlyPlayed, fetchMadeForYou]);
 
-  const memoizedFetchRecentlyPlayed = useCallback(() => {
+  const memorizedFetchRecentlyPlayed = useCallback(() => {
     fetchRecentlyPlayed();
   }, [fetchRecentlyPlayed]);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      memoizedFetchRecentlyPlayed();
+      memorizedFetchRecentlyPlayed();
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [memoizedFetchRecentlyPlayed]);
+  }, [memorizedFetchRecentlyPlayed]);
 
   return (
     <Stack spacing={4}>

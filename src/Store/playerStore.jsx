@@ -1,9 +1,6 @@
 import { create } from "zustand";
 import SpotifyWebApi from "spotify-web-api-node";
 import useSpotifyStore from "./SpotifyStore";
-import { IconButton } from "@mui/material";
-import PlayCircleIcon from "@mui/icons-material/PlayCircle";
-import PauseCircleIcon from "@mui/icons-material/PauseCircle";
 
 const spotifyApi = new SpotifyWebApi({
   clientId: import.meta.env.VITE_SPOTIFY_CLIENT_ID,
@@ -41,7 +38,12 @@ const PlayerStore = create((set) => ({
       }
 
       await spotifyApi.play({ device_id: activeDevice.id });
-      set({ isPlayed: false }); // Update state to indicate it's playing
+      const currentPlayingData = await spotifyApi.getMyCurrentPlayingTrack();
+      if (currentPlayingData.body && currentPlayingData.body.item) {
+        const currentSong = currentPlayingData.body.item;
+        set({ currentSong, isPlayed: false });
+        localStorage.setItem("currentSong", JSON.stringify(currentSong));
+      }
     } catch (error) {
       console.error("Error playing song:", error);
     }
@@ -73,11 +75,14 @@ const PlayerStore = create((set) => ({
       }
 
       await spotifyApi.pause({ device_id: activeDevice.id });
-      set({ isPlayed: true }); // Update state to indicate it's paused
+      const currentPlayingData = await spotifyApi.getMyCurrentPlayingTrack();
+      if (currentPlayingData.body && currentPlayingData.body.item) {
+        const currentSong = currentPlayingData.body.item;
+        set({ currentSong, isPlayed: true });
+        localStorage.setItem("currentSong", JSON.stringify(currentSong));
+      }
     } catch (error) {
       console.error("Error pausing song:", error);
-
-      // Handle specific error case where player command restriction is violated
       if (
         error.body &&
         error.body.error &&
@@ -90,9 +95,6 @@ const PlayerStore = create((set) => ({
       }
     }
   },
-
-  isFavourite: true,
-  setIsFavorite: (isFavourite) => set({ isFavourite }),
 
   // color for shuffle
   shuffleColor: true,
@@ -123,8 +125,7 @@ const PlayerStore = create((set) => ({
       const currentPlayingData = await spotifyApi.getMyCurrentPlayingTrack();
       if (currentPlayingData.body && currentPlayingData.body.item) {
         const currentSong = currentPlayingData.body.item;
-        set({ currentSong });
-        set({ isPlayed: false });
+        set({ currentSong, isPlayed: !currentPlayingData.body.is_playing });
         localStorage.setItem("currentSong", JSON.stringify(currentSong));
         return;
       }
@@ -134,17 +135,69 @@ const PlayerStore = create((set) => ({
       });
       if (recentlyPlayedData.body && recentlyPlayedData.body.items.length > 0) {
         const lastPlayedTrack = recentlyPlayedData.body.items[0].track;
-        set({ currentSong: lastPlayedTrack });
-        set({ isPlayed: true });
+        set({ currentSong: lastPlayedTrack, isPlayed: true });
         localStorage.setItem("currentSong", JSON.stringify(lastPlayedTrack));
       } else {
-        set({ currentSong: null });
-        set({ isPlayed: true });
+        set({ currentSong: null, isPlayed: true });
       }
     } catch (error) {
       console.error("Error fetching current song:", error);
-      set({ currentSong: null });
-      set({ isPlayed: true });
+      set({ currentSong: null, isPlayed: true });
+    }
+  },
+
+  isFavourite: false,
+  setIsFavorite: (isFavourite) => set({ isFavourite }),
+  //to check if liked
+  checkIfLiked: async (trackId) => {
+    try {
+      const accessToken = useSpotifyStore.getState().accessToken;
+      if (!accessToken) {
+        console.error("No access token available");
+        return;
+      }
+
+      spotifyApi.setAccessToken(accessToken);
+      const { body: isLikedArray } = await spotifyApi.containsMySavedTracks([
+        trackId,
+      ]);
+      set({ isFavourite: isLikedArray[0] });
+    } catch (error) {
+      console.error("Error checking if track is liked:", error);
+    }
+  },
+  // Method to like the current song
+  likeCurrentSong: async () => {
+    try {
+      const accessToken = useSpotifyStore.getState().accessToken;
+      const { currentSong } = PlayerStore.getState();
+      if (!accessToken || !currentSong) {
+        console.error("No access token or current song available");
+        return;
+      }
+
+      spotifyApi.setAccessToken(accessToken);
+      await spotifyApi.addToMySavedTracks([currentSong.id]);
+      set({ isFavourite: true });
+    } catch (error) {
+      console.error("Error liking the song:", error);
+    }
+  },
+  // Method to unlike the current song
+  unlikeCurrentSong: async () => {
+    try {
+      const accessToken = useSpotifyStore.getState().accessToken;
+      const { currentSong } = PlayerStore.getState();
+      if (!accessToken || !currentSong) {
+        console.error("No access token or current song available");
+        return;
+      }
+
+      spotifyApi.setAccessToken(accessToken);
+      await spotifyApi.removeFromMySavedTracks([currentSong.id]);
+      set({ isLiked: false });
+    } catch (error) {
+      console.error("Error unliking the song:", error);
     }
   },
 }));

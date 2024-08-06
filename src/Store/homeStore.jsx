@@ -9,7 +9,8 @@ const spotifyApi = new SpotifyWebApi({
 });
 
 const homeStore = create((set) => ({
-  recentlyPlayed: [],
+  recentlyPlayed: JSON.parse(localStorage.getItem("recentlyPlayed")) || [],
+
   setRecentlyPlayed: (recentlyPlayed) => {
     console.log("Setting recentlyPlayed:", recentlyPlayed);
     localStorage.setItem("recentlyPlayed", JSON.stringify(recentlyPlayed));

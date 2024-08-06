@@ -1,15 +1,13 @@
-import { useState, useEffect } from "react";
+import { lazy, useEffect, Suspense } from "react";
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Nav from "./Components/Nav";
-import NavMobile from "./Components/NavMobile";
-import Home from "./Components/Pages/Home";
-import Search from "./Components/Pages/Search";
+const Home = lazy(() => import("./Components/Pages/Home"));
+const Search = lazy(() => import("./Components/Pages/Search"));
 import Library from "./Components/Pages/Library";
-import Login from "./Components/Pages/Login";
+const Login = lazy(() => import("./Components/Pages/Login"));
 import Switch from "@mui/material/Switch";
 import { styled } from "@mui/material/styles";
-import ForgotPassword from "./Components/Pages/ForgotPassword";
+const ForgotPassword = lazy(() => import("./Components/Pages/ForgotPassword"));
 import Callback from "./Components/Pages/Callback";
 import Layout from "./Components/Layout";
 import useAuthenticationStore from "./Store/authStore";
@@ -84,13 +82,23 @@ function App() {
     <>
       <Router>
         <Routes>
-          <Route exact path="/" element={<Login IOSSwitch={IOSSwitch} />} />
+          <Route
+            exact
+            path="/"
+            element={
+              <Suspense fallback={null}>
+                <Login IOSSwitch={IOSSwitch} />
+              </Suspense>
+            }
+          />
           <Route
             exact
             path="/home"
             element={
               <Layout>
-                <Home />
+                <Suspense fallback={null}>
+                  <Home />
+                </Suspense>
               </Layout>
             }
           />
@@ -99,12 +107,22 @@ function App() {
             path="/search"
             element={
               <Layout>
-                <Search />
+                <Suspense fallback={null}>
+                  <Search />
+                </Suspense>
               </Layout>
             }
           />
           <Route exact path="/library" element={<Library />} />
-          <Route exact path="/forgotpassword" element={<ForgotPassword />} />
+          <Route
+            exact
+            path="/forgotpassword"
+            element={
+              <Suspense fallback={null}>
+                <ForgotPassword />
+              </Suspense>
+            }
+          />
           <Route
             exact
             path="/callback"
