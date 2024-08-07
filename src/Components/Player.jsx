@@ -16,14 +16,15 @@ import useSpotifyStore from "../Store/SpotifyStore";
 
 function Player() {
   const {
-    shuffleColor,
-    setShuffleColor,
+    shuffle,
+    toggleShuffle,
     isPlayed,
     setIsPlayed,
     isFavourite,
     setIsFavorite,
-    repeatColor,
-    setRepeatColor,
+    repeat,
+    setRepeat,
+    toggleRepeat,
     currentSong,
     setCurrentSong,
     fetchCurrentSong,
@@ -32,6 +33,8 @@ function Player() {
     checkIfLiked,
     likeCurrentSong,
     unlikeCurrentSong,
+    previousSong,
+    nextSong,
   } = PlayerStore();
 
   useEffect(() => {
@@ -111,10 +114,10 @@ function Player() {
       </Stack>
       <Stack sx={{ flex: 0.9, mx: 25 }}>
         <Stack direction="row" justifyContent="center">
-          <IconButton onClick={() => setShuffleColor(!shuffleColor)}>
+          <IconButton onClick={toggleShuffle}>
             <ShuffleIcon
               sx={{
-                color: shuffleColor ? "white" : "lightgreen",
+                color: shuffle ? "lightgreen" : "white",
                 opacity: 0.7,
                 "&:hover": { opacity: 1 },
               }}
@@ -122,7 +125,7 @@ function Player() {
             />
           </IconButton>
 
-          <IconButton>
+          <IconButton onClick={previousSong}>
             <SkipPreviousIcon
               sx={{ color: "white", opacity: 0.7, "&:hover": { opacity: 1 } }}
               fontSize="large"
@@ -138,16 +141,16 @@ function Player() {
             </IconButton>
           )}
 
-          <IconButton>
+          <IconButton onClick={nextSong}>
             <SkipNextIcon
               sx={{ color: "white", opacity: 0.7, "&:hover": { opacity: 1 } }}
               fontSize="large"
             />
           </IconButton>
-          <IconButton onClick={() => setRepeatColor(!repeatColor)}>
+          <IconButton onClick={toggleRepeat}>
             <RepeatIcon
               sx={{
-                color: repeatColor ? "white" : "lightgreen",
+                color: repeat === "off" ? "white" : "lightgreen",
                 opacity: 0.7,
                 "&:hover": { opacity: 1 },
               }}

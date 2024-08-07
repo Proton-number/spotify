@@ -96,13 +96,95 @@ const PlayerStore = create((set) => ({
     }
   },
 
-  // color for shuffle
-  shuffleColor: true,
-  setShuffleColor: (shuffleColor) => set({ shuffleColor }),
+  // for shuffle
+  shuffle: false,
+  setShuffle: (shuffle) => set({ shuffle }),
+
+  //method for shuffle
+  toggleShuffle: async () => {
+    try {
+      const accessToken = useSpotifyStore.getState().accessToken;
+      if (!accessToken) {
+        console.error("No access token available");
+        return;
+      }
+      spotifyApi.setAccessToken(accessToken);
+
+      const devices = await spotifyApi.getMyDevices();
+      if (devices.body.devices.length === 0) {
+        console.error("No active device available for playback");
+        return;
+      }
+
+      const activeDevice = devices.body.devices.find(
+        (device) => device.is_active
+      );
+      if (!activeDevice) {
+        console.error(
+          "No active device found. Please start playing on one of your devices."
+        );
+        return;
+      }
+      const newShuffleState = !PlayerStore.getState().shuffle;
+      await spotifyApi.setShuffle(newShuffleState, {
+        device_id: activeDevice.id,
+      });
+      set({ shuffle: newShuffleState });
+    } catch (error) {
+      console.error("Error toggling shuffle:", error);
+    }
+  },
 
   // color for repeat
-  repeatColor: true,
-  setRepeatColor: (repeatColor) => set({ repeatColor }),
+  repeat: false,
+  setRepeat: (repeat) => set({ repeat }),
+  //method to toggle repeat
+  toggleRepeat: async () => {
+    try {
+      const accessToken = useSpotifyStore.getState().accessToken;
+      if (!accessToken) {
+        console.error("No access token available");
+        return;
+      }
+      spotifyApi.setAccessToken(accessToken);
+
+      const devices = await spotifyApi.getMyDevices();
+      if (devices.body.devices.length === 0) {
+        console.error("No active device available for playback");
+        return;
+      }
+
+      const activeDevice = devices.body.devices.find(
+        (device) => device.is_active
+      );
+      if (!activeDevice) {
+        console.error(
+          "No active device found. Please start playing on one of your devices."
+        );
+        return;
+      }
+      const currentRepeat = PlayerStore.getState().repeat;
+      let newRepeat;
+      switch (currentRepeat) {
+        case "off":
+          newRepeat = "context";
+          break;
+        case "context":
+          newRepeat = "track";
+          break;
+        case "track":
+        default:
+          newRepeat = "off";
+          break;
+      }
+      await spotifyApi.setRepeat(newRepeat, {
+        device_id: activeDevice.id,
+      });
+      set({ repeat: newRepeat });
+    } catch (error) {
+      console.error("Error toggling repeat:", error);
+    }
+  },
 
   // FETCHING CURRENT SONG
   currentSong: JSON.parse(localStorage.getItem("currentSong")) || null,
@@ -198,6 +280,84 @@ const PlayerStore = create((set) => ({
       set({ isLiked: false });
     } catch (error) {
       console.error("Error unliking the song:", error);
+    }
+  },
+
+  //method to get previous song
+  previousSong: async () => {
+    try {
+      const accessToken = useSpotifyStore.getState().accessToken;
+      if (!accessToken) {
+        console.error("No access token available");
+        return;
+      }
+      spotifyApi.setAccessToken(accessToken);
+      const devices = await spotifyApi.getMyDevices();
+      if (devices.body.devices.length === 0) {
+        console.error("No active device available for playback");
+        return;
+      }
+      const activeDevice = devices.body.devices.find(
+        (device) => device.is_active
+      );
+      if (!activeDevice) {
+        console.error(
+          "No active device found. Please start playing on one of your devices."
+        );
+        return;
+      }
+      await spotifyApi.skipToPrevious({ device_id: activeDevice.id });
+      const currentPlayingData = await spotifyApi.getMyCurrentPlayingTrack();
+      if (currentPlayingData.body && currentPlayingData.body.item) {
+        const currentSong = currentPlayingData.body.item;
+        set({ currentSong, isPlayed: false });
+        localStorage.setItem("currentSong", JSON.stringify(currentSong));
+      }
+    } catch (error) {
+      console.error("Error skipping to the previous song:", error);
+    }
+  },
+
+  nextSong: async () => {
+    try {
+      const accessToken = useSpotifyStore.getState().accessToken;
+      if (!accessToken) {
+        console.error("No access token available");
+        return;
+      }
+
+      spotifyApi.setAccessToken(accessToken);
+
+      // Get available devices
+      const devices = await spotifyApi.getMyDevices();
+      if (devices.body.devices.length === 0) {
+        console.error("No active device available for playback");
+        return;
+      }
+
+      // Find the active device
+      const activeDevice = devices.body.devices.find(
+        (device) => device.is_active
+      );
+      if (!activeDevice) {
+        console.error(
+          "No active device found. Please start playing on one of your devices."
+        );
+        return;
+      }
+
+      // Skip to the next track
+      await spotifyApi.skipToNext({ device_id: activeDevice.id });
+
+      // Fetch the current playing track to update the state
+      const currentPlayingData = await spotifyApi.getMyCurrentPlayingTrack();
+      if (currentPlayingData.body && currentPlayingData.body.item) {
+        const currentSong = currentPlayingData.body.item;
+        set({ currentSong, isPlayed: false });
+        localStorage.setItem("currentSong", JSON.stringify(currentSong));
+      }
+    } catch (error) {
+      console.error("Error skipping to the next song:", error);
     }
   },
 }));
