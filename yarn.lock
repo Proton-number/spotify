@@ -3189,6 +3189,11 @@ spotify-web-api-node@^5.0.2:
   dependencies:
     superagent "^6.1.0"
 
+spotify-web-playback@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/spotify-web-playback/-/spotify-web-playback-1.4.0.tgz#ae2f5d2a70f26c926dc07e4c2518eee61d00116f"
+  integrity sha512-hZsYJ4xgkz7eUe9QVM+7wqT1hhFTRrW5q2VDVRK46gfIuIka6wsN/DQnL7Nf8OvvcFdRf0ksjP64ARN/wPljtA==
+
 string-width@^4.1.0, string-width@^4.2.0, string-width@^4.2.3:
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/string-width/-/string-width-4.2.3.tgz#269c7117d27b05ad2e536830a8ec895ef9c6d010"

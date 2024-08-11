@@ -72,6 +72,15 @@ function Player() {
     fetchCurrentSong();
   };
 
+  const handlePlayPause = async () => {
+  
+    if (isPlayed) {
+      await playCurrentSong();
+    } else {
+      await pauseCurrentSong();
+    }
+  };
+
   return (
     <Stack
       direction="row"
@@ -131,16 +140,13 @@ function Player() {
               fontSize="large"
             />
           </IconButton>
-          {isPlayed ? (
-            <IconButton onClick={playCurrentSong}>
+          <IconButton onClick={handlePlayPause}>
+            {isPlayed ? (
               <PlayCircleIcon sx={{ color: "white" }} fontSize="large" />
-            </IconButton>
-          ) : (
-            <IconButton onClick={pauseCurrentSong}>
+            ) : (
               <PauseCircleIcon sx={{ color: "white" }} fontSize="large" />
-            </IconButton>
-          )}
-
+            )}
+          </IconButton>
           <IconButton onClick={nextSong}>
             <SkipNextIcon
               sx={{ color: "white", opacity: 0.7, "&:hover": { opacity: 1 } }}
