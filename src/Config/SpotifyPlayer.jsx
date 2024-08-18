@@ -1,13 +1,14 @@
 import { useEffect } from "react";
 import useSpotifyStore from "../Store/SpotifyStore";
 const useSpotifyPlayer = () => {
-  const { accessToken, setDeviceId } = useSpotifyStore((state) => ({
-    accessToken: state.accessToken,
-    setDeviceId: state.setDeviceId,
-  }));
+  const { accessToken, setDeviceId, transferPlaybackToReactApp } =
+    useSpotifyStore((state) => ({
+      accessToken: state.accessToken,
+      setDeviceId: state.setDeviceId,
+    }));
 
   useEffect(() => {
-    if (window.Spotify && accessToken) {
+    window.onSpotifyWebPlaybackSDKReady = () => {
       const player = new window.Spotify.Player({
         name: "Atom Music",
         getOAuthToken: (cb) => {
@@ -38,10 +39,6 @@ const useSpotifyPlayer = () => {
       player.addListener("ready", ({ device_id }) => {
         console.log("Ready with Device ID", device_id);
         setDeviceId(device_id);
-
-        spotifyApi.transferMyPlayback([device_id]).then(() => {
-          console.log("Playback transferred to React app");
-        });
       });
 
       player.addListener("not_ready", ({ device_id }) => {
@@ -49,7 +46,7 @@ const useSpotifyPlayer = () => {
       });
 
       player.connect();
-    }
+    };
   }, [accessToken, setDeviceId]);
 };
 

@@ -1,12 +1,4 @@
-import {
-  Box,
-  Stack,
-  Typography,
-  IconButton,
-  Slider,
-  Menu,
-  Button,
-} from "@mui/material";
+import { Box, Stack, Typography, IconButton, Slider } from "@mui/material";
 import React, { useEffect, useCallback } from "react";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
@@ -23,16 +15,12 @@ import { motion } from "framer-motion";
 import useSpotifyStore from "../Store/SpotifyStore";
 
 function Player() {
-  const { transferPlaybackToReactApp } = useSpotifyStore();
   const {
     shuffle,
     toggleShuffle,
     isPlayed,
-    setIsPlayed,
     isFavourite,
-    setIsFavorite,
     repeat,
-    setRepeat,
     toggleRepeat,
     currentSong,
     setCurrentSong,
@@ -44,7 +32,30 @@ function Player() {
     unlikeCurrentSong,
     previousSong,
     nextSong,
+    position,
+    duration,
+    fetchCurrentPlaybackState,
+    seekPosition,
   } = PlayerStore();
+
+  useEffect(() => {
+    // Fetch and update playback state every second
+    const interval = setInterval(() => {
+      fetchCurrentPlaybackState();
+    }, 1000);
+
+    return () => clearInterval(interval); // Cleanup on unmount
+  }, [fetchCurrentPlaybackState]);
+
+  const handleSeek = (event, newValue) => {
+    seekPosition(newValue);
+  };
+  function formatTime(milliseconds) {
+    const seconds = Math.floor(milliseconds / 1000); // Convert milliseconds to seconds
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = String(seconds % 60).padStart(2, "0");
+    return `${minutes}:${remainingSeconds}`;
+  }
 
   useEffect(() => {
     if (currentSong) {
@@ -59,11 +70,6 @@ function Player() {
     }
     fetchCurrentSong();
   }, [fetchCurrentSong]);
-
-  useEffect(() => {
-    // Automatically transfer playback to the React app when it loads
-    transferPlaybackToReactApp();
-  }, [transferPlaybackToReactApp]);
 
   const memorizedFetchCurrentSong = useCallback(() => {
     fetchCurrentSong();
@@ -179,26 +185,20 @@ function Player() {
         </Stack>
         {/* progressbar */}
         <Slider
-          min={0}
-          step={1}
+          value={position}
+          max={duration}
+          onChange={handleSeek}
           sx={{
-            flexGrow: 1,
             color: "white",
             height: 4,
             "& .MuiSlider-track": {
               border: "none",
             },
             "& .MuiSlider-thumb": {
-              width: 8,
-              height: 8,
+              width: 12,
+              height: 12,
               transition: "0.3s cubic-bezier(.47,1.64,.41,.8)",
               backgroundColor: "#fff",
-              "&::before": {
-                boxShadow: "0 2px 12px 0 rgba(0,0,0,0.4)",
-              },
-              "&:hover, &.Mui-focusVisible": {
-                boxShadow: `0px 0px 0px 7px`,
-              },
               "&.Mui-active": {
                 width: 12,
                 height: 12,
@@ -224,7 +224,7 @@ function Player() {
               letterSpacing: 0.2,
             }}
           >
-            1:20
+            {formatTime(position)}
           </Typography>
           <Typography
             sx={{
@@ -234,7 +234,7 @@ function Player() {
               letterSpacing: 0.2,
             }}
           >
-            - 2:40
+            {formatTime(duration)}
           </Typography>
         </Box>
       </Stack>

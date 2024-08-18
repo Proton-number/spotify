@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import SpotifyWebApi from "spotify-web-api-node";
 import useSpotifyStore from "./SpotifyStore";
+import { duration } from "@mui/material";
 
 const spotifyApi = new SpotifyWebApi({
   clientId: import.meta.env.VITE_SPOTIFY_CLIENT_ID,
@@ -12,21 +13,7 @@ const PlayerStore = create((set) => ({
   isPlayed: true,
   setIsPlayed: (isPlayed) => set({ isPlayed }),
 
-  // Method to transfer playback to a specific device
-  transferPlayback: async (deviceId) => {
-    try {
-      const accessToken = useSpotifyStore.getState().accessToken;
-      if (!accessToken) {
-        console.error("No access token available");
-        return;
-      }
-      spotifyApi.setAccessToken(accessToken);
-      await spotifyApi.transferMyPlayback([deviceId], { play: true });
-      console.log(`Playback transferred to device ID: ${deviceId}`);
-    } catch (error) {
-      console.error("Error transferring playback:", error);
-    }
-  },
+ 
 
   // Method to get devices and transfer playback to the first available device
   playOnDevice: async () => {
@@ -175,7 +162,7 @@ const PlayerStore = create((set) => ({
   },
 
   // color for repeat
-  repeat: false,
+  repeat: "off",
   setRepeat: (repeat) => set({ repeat }),
   //method to toggle repeat
   toggleRepeat: async () => {
@@ -397,6 +384,52 @@ const PlayerStore = create((set) => ({
       }
     } catch (error) {
       console.error("Error skipping to the next song:", error);
+    }
+  },
+
+  //seeking
+  position: 0,
+  duration: 0,
+  // Method to set the position
+  setPosition: (position) => set({ position }),
+
+  // Method to set the duration
+  setDuration: (duration) => set({ duration }),
+
+  // In PlayerStore
+  fetchCurrentPlaybackState: async () => {
+    try {
+      const accessToken = useSpotifyStore.getState().accessToken;
+      if (!accessToken) {
+        console.error("No access token available");
+        return;
+      }
+
+      spotifyApi.setAccessToken(accessToken);
+      const playbackState = await spotifyApi.getMyCurrentPlaybackState();
+      if (playbackState.body && playbackState.body.item) {
+        const position = playbackState.body.progress_ms;
+        const duration = playbackState.body.item.duration_ms;
+        set({ position, duration });
+      }
+    } catch (error) {
+      console.error("Error fetching playback state:", error);
+    }
+  },
+  // In PlayerStore
+  seekPosition: async (position) => {
+    try {
+      const accessToken = useSpotifyStore.getState().accessToken;
+      if (!accessToken) {
+        console.error("No access token available");
+        return;
+      }
+
+      spotifyApi.setAccessToken(accessToken);
+      await spotifyApi.seek(position);
+      set({ position });
+    } catch (error) {
+      console.error("Error seeking to position:", error);
     }
   },
 }));
