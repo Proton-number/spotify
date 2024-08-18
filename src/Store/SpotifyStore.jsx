@@ -7,7 +7,36 @@ const spotifyApi = new SpotifyWebApi({
   redirectUri: import.meta.env.VITE_SPOTIFY_REDIRECT_URL,
 });
 
-const useSpotifyStore = create((set) => ({
+const useSpotifyStore = create((set, get) => ({
+  deviceId: null,
+  setDeviceId: (deviceId) => set({ deviceId }),
+
+  transferPlaybackToReactApp: async () => {
+    try {
+      const { accessToken } = get();
+      if (!accessToken) return;
+
+      const devicesResponse = await spotifyApi.getMyDevices();
+      const devices = devicesResponse.body.devices;
+
+      // Assuming your React app's device is the first one available
+      const webPlayerDevice = devices.find(
+        (device) => device.type === "Computer"
+      );
+
+      if (webPlayerDevice) {
+        await spotifyApi.transferMyPlayback([webPlayerDevice.id], {
+          play: true, // Automatically start playback
+        });
+        console.log("Playback transferred to React app");
+      } else {
+        console.error("No web player device found.");
+      }
+    } catch (error) {
+      console.error("Error transferring playback:", error);
+    }
+  },
+
   likedSongs: [],
   setLikedSongs: (likedSongs) => {
     console.log("Setting likedSongs:", likedSongs);

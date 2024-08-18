@@ -12,6 +12,45 @@ const PlayerStore = create((set) => ({
   isPlayed: true,
   setIsPlayed: (isPlayed) => set({ isPlayed }),
 
+  // Method to transfer playback to a specific device
+  transferPlayback: async (deviceId) => {
+    try {
+      const accessToken = useSpotifyStore.getState().accessToken;
+      if (!accessToken) {
+        console.error("No access token available");
+        return;
+      }
+      spotifyApi.setAccessToken(accessToken);
+      await spotifyApi.transferMyPlayback([deviceId], { play: true });
+      console.log(`Playback transferred to device ID: ${deviceId}`);
+    } catch (error) {
+      console.error("Error transferring playback:", error);
+    }
+  },
+
+  // Method to get devices and transfer playback to the first available device
+  playOnDevice: async () => {
+    try {
+      const accessToken = useSpotifyStore.getState().accessToken;
+      if (!accessToken) {
+        console.error("No access token available");
+        return;
+      }
+
+      spotifyApi.setAccessToken(accessToken);
+      const devices = await spotifyApi.getMyDevices();
+      if (devices.body.devices.length === 0) {
+        console.error("No available devices for playback");
+        return;
+      }
+
+      const deviceId = devices.body.devices[0].id; // Choose your device logic here
+      await PlayerStore.getState().transferPlayback(deviceId);
+    } catch (error) {
+      console.error("Error playing on device:", error);
+    }
+  },
+
   playCurrentSong: async () => {
     try {
       const accessToken = useSpotifyStore.getState().accessToken;

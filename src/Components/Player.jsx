@@ -1,4 +1,12 @@
-import { Box, Stack, Typography, IconButton, Slider } from "@mui/material";
+import {
+  Box,
+  Stack,
+  Typography,
+  IconButton,
+  Slider,
+  Menu,
+  Button,
+} from "@mui/material";
 import React, { useEffect, useCallback } from "react";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
@@ -15,6 +23,7 @@ import { motion } from "framer-motion";
 import useSpotifyStore from "../Store/SpotifyStore";
 
 function Player() {
+  const { transferPlaybackToReactApp } = useSpotifyStore();
   const {
     shuffle,
     toggleShuffle,
@@ -50,6 +59,11 @@ function Player() {
     }
     fetchCurrentSong();
   }, [fetchCurrentSong]);
+
+  useEffect(() => {
+    // Automatically transfer playback to the React app when it loads
+    transferPlaybackToReactApp();
+  }, [transferPlaybackToReactApp]);
 
   const memorizedFetchCurrentSong = useCallback(() => {
     fetchCurrentSong();

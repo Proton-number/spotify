@@ -11,8 +11,10 @@ const ForgotPassword = lazy(() => import("./Components/Pages/ForgotPassword"));
 import Callback from "./Components/Pages/Callback";
 import Layout from "./Components/Layout";
 import useAuthenticationStore from "./Store/authStore";
+import useSpotifyPlayer from "./Config/SpotifyPlayer";
 
 function App() {
+  useSpotifyPlayer();
   const IOSSwitch = styled((props) => (
     <Switch
       focusVisibleClassName=".Mui-focusVisible"
