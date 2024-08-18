@@ -73,7 +73,6 @@ function Player() {
   };
 
   const handlePlayPause = async () => {
-  
     if (isPlayed) {
       await playCurrentSong();
     } else {
