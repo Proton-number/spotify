@@ -31,12 +31,12 @@ function Layout({ children }) {
 
             <Box
               sx={{
-                marginLeft: "30%", // Adjust this according to the width of the Nav
+                marginLeft: "30%", 
                 display: "flex",
                 flexDirection: "column",
                 width: "72%",
                 overflowY: "auto",
-                paddingBottom: "70px", // Adjust this according to the height of the player
+                paddingBottom: "70px",
               }}
             >
               <Paper
@@ -52,7 +52,7 @@ function Layout({ children }) {
                   sx={{
                     position: "fixed",
                     top: 18,
-                    width: "68%", // Same as the main content width
+                    width: "68%", 
                   }}
                 >
                   <TopNav />

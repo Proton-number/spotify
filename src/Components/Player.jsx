@@ -103,7 +103,7 @@ function Player() {
   return (
     <Stack
       direction="row"
-      sx={{ alignItems: "center", justifyContent: "space-evenly" }}
+      sx={{ alignItems: "center", justifyContent: "space-around" }}
     >
       <Stack
         direction="row"
@@ -119,13 +119,13 @@ function Player() {
           />
         )}
 
-        <Stack>
+        <Stack sx={{ width: "300px" }}>
           <Box>
-            <Typography sx={{ fontWeight: "bold" }}>
+            <Typography variant="body2" sx={{ fontWeight: "bold" }}>
               {currentSong ? currentSong.name : "Song name"}
             </Typography>
           </Box>
-          <Typography variant="body2" sx={{ opacity: "70%" }}>
+          <Typography variant="subtitle2" sx={{ opacity: "70%" }}>
             {currentSong ? currentSong.artists[0].name : "Artist"}
           </Typography>
         </Stack>
@@ -140,7 +140,7 @@ function Player() {
           )}
         </IconButton>
       </Stack>
-      <Stack sx={{ flex: 0.9, mx: 25 }}>
+      <Stack>
         <Stack direction="row" justifyContent="center">
           <IconButton onClick={toggleShuffle}>
             <ShuffleIcon
@@ -184,31 +184,37 @@ function Player() {
           </IconButton>
         </Stack>
         {/* progressbar */}
-        <Slider
-          value={position}
-          max={duration}
-          onChange={handleSeek}
-          sx={{
-            color: "white",
-            height: 4,
-            "& .MuiSlider-track": {
-              border: "none",
-            },
-            "& .MuiSlider-thumb": {
-              width: 12,
-              height: 12,
-              transition: "0.3s cubic-bezier(.47,1.64,.41,.8)",
-              backgroundColor: "#fff",
-              "&.Mui-active": {
+        <Box>
+          <Slider
+            value={position}
+            max={duration}
+            onChange={handleSeek}
+            sx={{
+              width: {
+                lg: 600,
+              },
+
+              color: "white",
+              height: 4,
+              "& .MuiSlider-track": {
+                border: "none",
+              },
+              "& .MuiSlider-thumb": {
                 width: 12,
                 height: 12,
+                transition: "0.3s cubic-bezier(.47,1.64,.41,.8)",
+                backgroundColor: "#fff",
+                "&.Mui-active": {
+                  width: 12,
+                  height: 12,
+                },
+                "& .MuiSlider-rail": {
+                  opacity: 0.28,
+                },
               },
-              "& .MuiSlider-rail": {
-                opacity: 0.28,
-              },
-            },
-          }}
-        />
+            }}
+          />
+        </Box>
         <Box
           sx={{
             display: "flex",
@@ -237,73 +243,6 @@ function Player() {
             {formatTime(duration)}
           </Typography>
         </Box>
-      </Stack>
-
-      <Stack direction="row" sx={{ alignItems: "center" }} spacing={1}>
-        {/* Mic svg */}
-        <motion.svg
-          initial={{ opacity: 0.5 }}
-          whileHover={{ opacity: 1 }}
-          data-encore-id="icon"
-          role="img"
-          aria-hidden="true"
-          viewBox="0 0 16 16"
-          className="Svg-sc-ytk21e-0 dYnaPI"
-          id="SVG 20"
-          xmlns="http://www.w3.org/2000/svg"
-          xmlnsXlink="http://www.w3.org/1999/xlink"
-          width="20px"
-        >
-          <path
-            fill="white"
-            d="M13.426 2.574a2.831 2.831 0 0 0-4.797 1.55l3.247 3.247a2.831 2.831 0 0 0 1.55-4.797zM10.5 8.118l-2.619-2.62A63303.13 63303.13 0 0 0 4.74 9.075L2.065 12.12a1.287 1.287 0 0 0 1.816 1.816l3.06-2.688 3.56-3.129zM7.12 4.094a4.331 4.331 0 1 1 4.786 4.786l-3.974 3.493-3.06 2.689a2.787 2.787 0 0 1-3.933-3.933l2.676-3.045 3.505-3.99z"
-          ></path>
-        </motion.svg>
-        <motion.svg
-          initial={{ opacity: 0.5 }}
-          whileHover={{ opacity: 1 }}
-          data-encore-id="icon"
-          role="img"
-          aria-hidden="true"
-          viewBox="0 0 16 16"
-          className="Svg-sc-ytk21e-0 dYnaPI"
-          id="SVG 24"
-          xmlns="http://www.w3.org/2000/svg"
-          xmlns:xlink="http://www.w3.org/1999/xlink"
-          width="20px"
-        >
-          <path
-            fill="white"
-            d="M15 15H1v-1.5h14V15zm0-4.5H1V9h14v1.5zm-14-7A2.5 2.5 0 0 1 3.5 1h9a2.5 2.5 0 0 1 0 5h-9A2.5 2.5 0 0 1 1 3.5zm2.5-1a1 1 0 0 0 0 2h9a1 1 0 1 0 0-2h-9z"
-          ></path>
-        </motion.svg>
-
-        <Stack direction="column" sx={{ width: "150px" }}>
-          <Box sx={{ display: "flex", alignItems: "center", width: "100%" }}>
-            <VolumeDownRounded />
-            <Slider
-              sx={{
-                mx: 1,
-                color: "rgba(255, 255, 255, 0.38)",
-                "& .MuiSlider-track": {
-                  border: "none",
-                },
-                "& .MuiSlider-thumb": {
-                  width: 12,
-                  height: 12,
-                  backgroundColor: "#fff",
-                  "&::before": {
-                    boxShadow: "0 4px 8px rgba(0,0,0,0.4)",
-                  },
-                  "&:hover, &.Mui-focusVisible, &.Mui-active": {
-                    boxShadow: "none",
-                  },
-                },
-              }}
-            />
-            <VolumeUpRounded />
-          </Box>
-        </Stack>
       </Stack>
     </Stack>
   );
