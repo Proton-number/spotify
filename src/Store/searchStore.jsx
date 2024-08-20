@@ -38,7 +38,24 @@ const searchStore = create((set) => ({
 
   //for searchbar
   inputValue: "",
-  setInputValue: (inputValue) => set({inputValue})
+  setInputValue: (inputValue) => set({ inputValue }),
+  searchResults: [],
+  setSearchResults: (searchResults) => set({ searchResults }),
+  searchSpotify: async () => {
+    const { inputValue } = searchStore.getState();
+    const accessToken = useSpotifyStore.getState().accessToken;
+    if (!inputValue || !accessToken) return;
+
+    try {
+      spotifyApi.setAccessToken(accessToken);
+      const data = await spotifyApi.search(inputValue, ['track', 'album', 'artist'], { limit: 10 });
+      set({ searchResults: data.body });
+    } catch (error) {
+      console.error("Error searching Spotify:", error);
+    }
+  }
+
+
 }));
 
 export default searchStore;

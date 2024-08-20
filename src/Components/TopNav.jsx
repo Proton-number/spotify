@@ -21,7 +21,7 @@ import searchStore from "../Store/searchStore";
 
 function TopNav() {
   const navigate = useNavigate();
-  const { inputValue, setInputValue } = searchStore();
+  const { inputValue, setInputValue, searchSpotify } = searchStore();
   const user = useAuthenticationStore((state) => state.user);
   const setUser = useAuthenticationStore((state) => state.setUser);
   const [loading, setLoading] = useState(true);
@@ -29,7 +29,6 @@ function TopNav() {
   const { signOutHandler } = useAuthenticationStore((state) => ({
     signOutHandler: state.signOutHandler,
   }));
-
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -70,6 +69,10 @@ function TopNav() {
   };
 
   const location = useLocation();
+
+  const handleSearch = () => {
+    searchSpotify();
+  };
 
   return (
     <Stack
@@ -120,7 +123,9 @@ function TopNav() {
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  <SearchIcon sx={{ color: "white" }} />
+                  <IconButton onClick={handleSearch}>
+                    <SearchIcon sx={{ color: "white" }} />
+                  </IconButton>
                 </InputAdornment>
               ),
               endAdornment: (

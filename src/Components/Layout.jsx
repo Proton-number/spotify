@@ -23,7 +23,7 @@ function Layout({ children }) {
                 top: 14,
                 left: 12,
                 zIndex: 2,
-                overflow: "hidden",
+                // overflow: "hidden",
               }}
             >
               <Nav />
