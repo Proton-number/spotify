@@ -1,4 +1,4 @@
-import { Box, Stack, Typography, IconButton, Slider } from "@mui/material";
+import { Box, Stack, Typography, IconButton, Slider, Skeleton } from "@mui/material";
 import React, { useEffect, useCallback } from "react";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
@@ -107,7 +107,6 @@ function Player() {
     >
       <Stack
         direction="row"
-        spacing={2}
         sx={{ alignItems: "center", justifyContent: "center" }}
       >
         {currentSong && currentSong.album && currentSong.album.images && (

@@ -76,16 +76,6 @@ function Home() {
               Made for {user?.display_name || "Guest"}
             </Typography>
           </ThemeProvider>
-          <Typography
-            variant="body2"
-            sx={{
-              opacity: "70%",
-              "&:hover": { textDecoration: "underline" },
-              cursor: "pointer",
-            }}
-          >
-            Show all
-          </Typography>
         </Box>
         <Grid spacing={1.5} container direction="row">
           {madeForYou.map((made, index) => (
@@ -160,16 +150,6 @@ function Home() {
               Recently played
             </Typography>
           </ThemeProvider>
-          <Typography
-            variant="body2"
-            sx={{
-              opacity: "70%",
-              "&:hover": { textDecoration: "underline" },
-              cursor: "pointer",
-            }}
-          >
-            Show all
-          </Typography>
         </Box>
         <Grid spacing={1.5} container direction="row">
           {recentlyPlayed.map((track, index) => (

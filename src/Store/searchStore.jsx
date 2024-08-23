@@ -48,7 +48,7 @@ const searchStore = create((set) => ({
 
     try {
       spotifyApi.setAccessToken(accessToken);
-      const data = await spotifyApi.search(inputValue, ['track', 'album', 'artist'], { limit: 10 });
+      const data = await spotifyApi.search(inputValue, ['track', 'album', 'artist'], { limit: 20 });
       set({ searchResults: data.body });
     } catch (error) {
       console.error("Error searching Spotify:", error);

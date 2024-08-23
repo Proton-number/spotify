@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Stack, Typography, Box, Grid } from "@mui/material";
+import { Stack, Typography, Box, Grid, Skeleton } from "@mui/material";
 import searchStore from "../../Store/searchStore";
 import { treadmill } from "ldrs";
 
@@ -27,7 +27,7 @@ function Search() {
   const displayCategories = !inputValue || searchResults.length === 0;
 
   return (
-    <Stack spacing={1} sx={{ height: "100vh", overflow: "hidden" }}>
+    <Stack spacing={1}>
       <Typography variant="h5" sx={{ fontWeight: "bold" }}>
         {displayCategories ? "Browse all" : "Search Results"}
       </Typography>
@@ -37,7 +37,7 @@ function Search() {
           sx={{
             justifyContent: "center",
             alignItems: "center",
-            height: "80vh",
+            height: "100vh",
           }}
         >
           <l-treadmill size="70" speed="1.25" color="white"></l-treadmill>
@@ -46,13 +46,22 @@ function Search() {
         <Grid container spacing={2}>
           {categories.map((category) => (
             <Grid item xs={12} sm={6} md={4} lg={3} key={category.id}>
-              <Box
-                component="img"
-                src={category.icons[0].url}
-                alt={category.name}
-                sx={{ width: "100%", borderRadius: 2, cursor: "pointer" }}
-              />
-              <Typography variant="h6" sx={{ mt: 1 }}>
+              {category.icons[0]?.url ? (
+                <Box
+                  component="img"
+                  src={category.icons[0]?.url}
+                  alt={category.name}
+                  sx={{
+                    width: "100%",
+                    borderRadius: 2,
+                    cursor: "pointer",
+                    display: "block",
+                  }}
+                />
+              ) : (
+                <Skeleton variant="rectangular" width="100%" height="240px" />
+              )}
+              <Typography variant="body1" sx={{ mt: 1 }}>
                 {category.name}
               </Typography>
             </Grid>
@@ -63,13 +72,18 @@ function Search() {
           <Grid container spacing={2}>
             {searchResults.tracks.items.map((track) => (
               <Grid item xs={12} sm={6} md={4} lg={3} key={track.id}>
-                <Box
-                  component="img"
-                  src={track.album.images[0]?.url || "/placeholder.jpg"} // Fallback if no image
-                  alt={track.name}
-                  sx={{ width: "100%", borderRadius: 2, cursor: "pointer" }}
-                />
-                <Typography variant="h6" sx={{ mt: 1 }}>
+                {track.album.images[0]?.url ? (
+                  <Box
+                    component="img"
+                    src={track.album.images[0]?.url}
+                    alt={track.name}
+                    sx={{ width: "100%", borderRadius: 2, cursor: "pointer" }}
+                  />
+                ) : (
+                  <Skeleton variant="rectangular" width="100%" height="240px" />
+                )}
+
+                <Typography variant="body2" sx={{ mt: 1 }}>
                   {track.name}
                 </Typography>
               </Grid>

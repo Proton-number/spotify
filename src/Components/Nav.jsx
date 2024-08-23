@@ -10,7 +10,6 @@ import useSpotifyStore from "../Store/SpotifyStore";
 function Nav() {
   const [filter, setFilter] = useState("All");
   const {
-    likedSongs,
     savedAlbums,
     podcasts,
     artists,
@@ -137,11 +136,11 @@ function Nav() {
           color: "white",
           backgroundColor: "hsl(60, 2%, 9%)",
           borderRadius: "12px",
-          height: { lg: "71.5vh" },
+          height: { sm: "71vh", lg: "71.5vh" },
         }}
         elevation={8}
       >
-        <Stack spacing={1.5} sx={{ height: { lg: "71.5vh" } }}>
+        <Stack spacing={1.5} sx={{ height: { sm: "70vh", lg: "71.5vh" } }}>
           <Stack direction="row" sx={{ justifyContent: "space-between" }}>
             <Stack direction="row" spacing={2} sx={{ alignItems: "center" }}>
               <svg
@@ -169,7 +168,7 @@ function Nav() {
               <ArrowForwardIcon />
             </Stack>
           </Stack>
-          <Stack direction="row" spacing={2}>
+          <Stack direction={{ xs: "column", lg: "row" }} spacing={2}>
             <Box
               onClick={() => handleFilterClick("Playlists")}
               sx={{
@@ -265,7 +264,10 @@ function Nav() {
                     component="img"
                     src={album.album.images[0].url}
                     alt={album.album.name}
-                    sx={{ width: { lg: "60px" }, borderRadius: "10px" }}
+                    sx={{
+                      width: { sm: "40px", lg: "60px" },
+                      borderRadius: "10px",
+                    }}
                   />
                   <Stack>
                     <Typography variant="body2">
@@ -274,7 +276,7 @@ function Nav() {
                     </Typography>
                     <Typography variant="subtitle2" fontSize=".78rem">
                       {" "}
-                      Album  • {album.album.artists[0].name}
+                      Album • {album.album.artists[0].name}
                     </Typography>
                   </Stack>
                 </Stack>
@@ -297,7 +299,7 @@ function Nav() {
                     loading="lazy"
                     component="img"
                     src={podcast.show.images[0].url}
-                    sx={{ width: { lg: "60px" } }}
+                    sx={{ width: { sm: "40px", lg: "60px" } }}
                     alt={podcast.show.name}
                   />
                   <Stack>
@@ -306,7 +308,7 @@ function Nav() {
                     </Typography>
                     <Typography variant="subtitle2" fontSize=".78rem">
                       {" "}
-                      Podcast  • {podcast.show.publisher}
+                      Podcast • {podcast.show.publisher}
                     </Typography>
                   </Stack>
                 </Stack>
@@ -330,7 +332,10 @@ function Nav() {
                     loading="lazy"
                     component="img"
                     src={artist.images[0].url}
-                    sx={{ width: { lg: "60px" }, borderRadius: "50%" }}
+                    sx={{
+                      width: { sm: "40px", lg: "60px" },
+                      borderRadius: "50%",
+                    }}
                   />
                   <Typography variant="body2">
                     <b>{artist.name}</b>
@@ -355,7 +360,7 @@ function Nav() {
                     loading="lazy"
                     component="img"
                     src={playlist.images[0].url}
-                    sx={{ width: { lg: "60px" } }}
+                    sx={{ width: { sm: "40px", lg: "60px" } }}
                   />
                   <Typography variant="body2">
                     <b>{playlist.name}</b>

@@ -71,10 +71,68 @@ const useSpotifyStore = create((set, get) => ({
 
   // ACCESS TOKEN
   accessToken: null,
+  refreshToken: localStorage.getItem("spotifyRefreshToken"), // Retrieve stored refresh token
   setAccessToken: (token) => {
     spotifyApi.setAccessToken(token);
-    localStorage.setItem("spotifyAccessToken", token); // Store token in local storage
+    localStorage.setItem("spotifyAccessToken", token);
     set({ accessToken: token });
+  },
+  setRefreshToken: (token) => {
+    localStorage.setItem("spotifyRefreshToken", token);
+    set({ refreshToken: token });
+  },
+
+  // Token refresh method
+  refreshAccessToken: async () => {
+    try {
+      const { refreshToken } = get();
+      if (!refreshToken) throw new Error("No refresh token available");
+
+      const response = await fetch("https://accounts.spotify.com/api/token", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Authorization: `Basic ${btoa(
+            `${import.meta.env.VITE_SPOTIFY_CLIENT_ID}:${
+              import.meta.env.VITE_SPOTIFY_CLIENT_SECRET
+            }`
+          )}`,
+        },
+        body: new URLSearchParams({
+          grant_type: "refresh_token",
+          refresh_token: refreshToken,
+        }),
+      });
+
+      const data = await response.json();
+      if (data.error) throw new Error(data.error_description);
+
+      const { access_token } = data;
+      useSpotifyStore.getState().setAccessToken(access_token);
+
+      return access_token;
+    } catch (error) {
+      console.error("Error refreshing access token:", error);
+      throw error;
+    }
+  },
+
+  // Ensure access token is valid
+  refreshAccessTokenIfNeeded: async () => {
+    try {
+      const { accessToken } = get();
+      if (!accessToken) return;
+
+      // If token is expired or about to expire, refresh it
+      // For simplicity, assuming token expiration check is implemented
+      const tokenIsExpired = false; // Implement actual expiration check
+
+      if (tokenIsExpired) {
+        await useSpotifyStore.getState().refreshAccessToken();
+      }
+    } catch (error) {
+      console.error("Error checking or refreshing access token:", error);
+    }
   },
 
   // FETCHING DATA FROM SPOTIFY
@@ -143,9 +201,11 @@ const useSpotifyStore = create((set, get) => ({
 // Initialize the store with the token from local storage if it exists
 const initializeStore = () => {
   const accessToken = localStorage.getItem("spotifyAccessToken");
+  const refreshToken = localStorage.getItem("spotifyRefreshToken");
+
   if (accessToken) {
     spotifyApi.setAccessToken(accessToken);
-    useSpotifyStore.setState({ accessToken });
+    useSpotifyStore.setState({ accessToken, refreshToken });
   }
 };
 
