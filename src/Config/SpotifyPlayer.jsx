@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import useSpotifyStore from "../Store/SpotifyStore";
 const useSpotifyPlayer = () => {
-  const { accessToken, setDeviceId, transferPlaybackToReactApp } =
+  const { accessToken, setDeviceId } =
     useSpotifyStore((state) => ({
       accessToken: state.accessToken,
       setDeviceId: state.setDeviceId,

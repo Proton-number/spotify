@@ -100,8 +100,8 @@ function Home() {
               <Box
                 component="img"
                 sx={{
-                  width: "190px",
-                  height: "190px",
+                  width: { xs: "150px", sm: "190px" },
+                  height: { xs: "150px", sm: "190px" },
                 }}
                 src={made.images[0]?.url}
               />
@@ -175,8 +175,8 @@ function Home() {
                 component="img"
                 src={track?.track?.album?.images?.[0]?.url || ""}
                 sx={{
-                  width: "190px",
-                  height: "190px",
+                  width: { xs: "150px", sm: "190px" },
+                  height: { xs: "150px", sm: "190px" },
                 }}
               />
               <Box

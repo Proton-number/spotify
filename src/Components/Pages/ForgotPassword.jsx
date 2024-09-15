@@ -18,11 +18,11 @@ function ForgotPassword() {
   return (
     <Stack
       sx={{
-        width: { sm: "40%", lg: "25%" },
-        margin: "0 auto",
-        textAlign: "left",
+        width: { sm: "41%", lg: "25%" },
+        margin: " auto",
         position: "relative",
         justifyContent: "center",
+        alignItems: "center",
         height: "100vh",
       }}
       spacing={3}
@@ -32,8 +32,8 @@ function ForgotPassword() {
         sx={{
           alignItems: "center",
           position: "fixed",
-          top: { sm: 80, lg: 50 },
-          left: { sm: 50, lg: 60 },
+          top: { xs: 40, sm: 80, lg: 50 },
+          left: { xs: 20, sm: 50, lg: 60 },
         }}
         spacing={2}
       >
@@ -52,7 +52,7 @@ function ForgotPassword() {
         </Typography>
       </Stack>
       <Typography variant="h4">Reset your password</Typography>
-      <Typography variant="body2">
+      <Typography variant="body2" sx={{ width: { xs: "80%" , sm:"100%"} }}>
         Enter your email address or username, and we'll send you a link to get
         back into your account.
       </Typography>
@@ -62,10 +62,11 @@ function ForgotPassword() {
         type="text"
         label={
           <Typography variant="body2" sx={{ color: "white" }}>
-            Email address or username
+            Email address or Username...
           </Typography>
         }
         sx={{
+          width: { xs: "80%", sm: "100%", lg: "50%" },
           "& .MuiOutlinedInput-root": {
             "& fieldset": {
               borderColor: "white",
@@ -101,9 +102,10 @@ function ForgotPassword() {
         onClick={handlePasswordReset}
         variant="contained"
         sx={{
+          width: { xs: "80%", sm: "100%", lg: "50%" },
           textTransform: "none",
           fontWeight: "1200px",
-          borderRadius: "25px",
+          borderRadius: "4px",
           padding: "14px",
           color: "black",
           backgroundColor: "hsl(147, 100%, 43%)",

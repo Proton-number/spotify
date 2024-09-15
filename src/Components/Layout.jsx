@@ -18,12 +18,11 @@ function Layout({ children }) {
           <Box sx={{ flexGrow: 1, display: "flex" }}>
             <Box
               sx={{
-                width: "28%",
+                width: { xs: "34%", sm: "28%" },
                 position: "fixed",
                 top: 14,
                 left: 12,
                 zIndex: 2,
-                // overflow: "hidden",
               }}
             >
               <Nav />
@@ -31,10 +30,10 @@ function Layout({ children }) {
 
             <Box
               sx={{
-                marginLeft: "30%", 
+                marginLeft: { xs: "38%", sm: "30%" },
                 display: "flex",
                 flexDirection: "column",
-                width: "72%",
+                width: { xs: "63%", sm: "72%" },
                 overflowY: "auto",
                 paddingBottom: "70px",
               }}
@@ -52,7 +51,7 @@ function Layout({ children }) {
                   sx={{
                     position: "fixed",
                     top: 18,
-                    width: "68%", 
+                    width: { xs: "58%", sm: "68%" },
                   }}
                 >
                   <TopNav />
@@ -62,7 +61,7 @@ function Layout({ children }) {
                   sx={{
                     marginTop: "80px",
                     padding: "16px",
-                    marginBottom: "20px",
+                    marginBottom: { xs: "100px", sm: "20px" },
                   }}
                 >
                   {children}

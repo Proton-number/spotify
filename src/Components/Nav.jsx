@@ -3,8 +3,6 @@ import { Link } from "react-router-dom";
 import { Typography, Stack, Paper, Box } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import SearchIcon from "@mui/icons-material/Search";
-import AddIcon from "@mui/icons-material/Add";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import useSpotifyStore from "../Store/SpotifyStore";
 function Nav() {
@@ -136,11 +134,14 @@ function Nav() {
           color: "white",
           backgroundColor: "hsl(60, 2%, 9%)",
           borderRadius: "12px",
-          height: { sm: "71vh", lg: "71.5vh" },
+          height: { xs: "58vh", sm: "71vh", lg: "71.5vh" },
         }}
         elevation={8}
       >
-        <Stack spacing={1.5} sx={{ height: { sm: "70vh", lg: "71.5vh" } }}>
+        <Stack
+          spacing={1.5}
+          sx={{ height: { xs: "58vh", sm: "70vh", lg: "71.5vh" } }}
+        >
           <Stack direction="row" sx={{ justifyContent: "space-between" }}>
             <Stack direction="row" spacing={2} sx={{ alignItems: "center" }}>
               <svg
@@ -162,10 +163,6 @@ function Nav() {
               <Typography>
                 <b>Your library</b>
               </Typography>
-            </Stack>
-            <Stack direction="row" spacing={2}>
-              <AddIcon />
-              <ArrowForwardIcon />
             </Stack>
           </Stack>
           <Stack direction={{ xs: "column", lg: "row" }} spacing={2}>
@@ -254,7 +251,7 @@ function Nav() {
             savedAlbums.length > 0 ? (
               savedAlbums.map((album) => (
                 <Stack
-                  direction="row"
+                  direction={{ sm: "row" }}
                   sx={{ alignItems: "center", cursor: "pointer" }}
                   key={album.album.id}
                   spacing={2}
@@ -265,7 +262,7 @@ function Nav() {
                     src={album.album.images[0].url}
                     alt={album.album.name}
                     sx={{
-                      width: { sm: "40px", lg: "60px" },
+                      width: { xs: "60px", sm: "40px", lg: "60px" },
                       borderRadius: "10px",
                     }}
                   />
@@ -291,7 +288,7 @@ function Nav() {
               podcasts.map((podcast) => (
                 <Stack
                   key={podcast.show.id}
-                  direction="row"
+                  direction={{ sm: "row" }}
                   sx={{ alignItems: "center", cursor: "pointer" }}
                   spacing={2}
                 >
@@ -299,7 +296,7 @@ function Nav() {
                     loading="lazy"
                     component="img"
                     src={podcast.show.images[0].url}
-                    sx={{ width: { sm: "40px", lg: "60px" } }}
+                    sx={{ width: { xs: "60px", sm: "40px", lg: "60px" } }}
                     alt={podcast.show.name}
                   />
                   <Stack>
@@ -323,7 +320,7 @@ function Nav() {
               artists.map((artist) => (
                 <Stack
                   key={artist.id}
-                  direction="row"
+                  direction={{ sm: "row" }}
                   sx={{ alignItems: "center", cursor: "pointer" }}
                   alt={artist.name}
                   spacing={2}
@@ -333,7 +330,7 @@ function Nav() {
                     component="img"
                     src={artist.images[0].url}
                     sx={{
-                      width: { sm: "40px", lg: "60px" },
+                      width: { xs: "60px", sm: "40px", lg: "60px" },
                       borderRadius: "50%",
                     }}
                   />
@@ -352,7 +349,7 @@ function Nav() {
               userPlaylists.map((playlist) => (
                 <Stack
                   key={playlist.id}
-                  direction="row"
+                  direction={{ sm: "row" }}
                   sx={{ alignItems: "center", cursor: "pointer" }}
                   spacing={2}
                 >
@@ -360,7 +357,7 @@ function Nav() {
                     loading="lazy"
                     component="img"
                     src={playlist.images[0].url}
-                    sx={{ width: { sm: "40px", lg: "60px" } }}
+                    sx={{ width: { xs: "60px", sm: "40px", lg: "60px" } }}
                   />
                   <Typography variant="body2">
                     <b>{playlist.name}</b>

@@ -7,18 +7,15 @@ import {
   createTheme,
   ThemeProvider,
   IconButton,
-  FormGroup,
-  FormControlLabel,
 } from "@mui/material";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import useAuthenticationStore from "../../Store/authStore";
 import { useNavigate, Link } from "react-router-dom";
 
-
-function Login({ IOSSwitch }) {
+function Login() {
   const navigate = useNavigate();
   const {
     user,
@@ -48,7 +45,7 @@ function Login({ IOSSwitch }) {
   });
 
   return (
-    <Stack spacing={5} sx={{}}>
+    <Stack spacing={5} sx={{ justifyContent: "center", height: "100vh" }}>
       <Stack sx={{ alignItems: "center" }} spacing={2}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -149,7 +146,7 @@ function Login({ IOSSwitch }) {
           sx={{
             height: "1px",
             backgroundColor: "grey",
-            width: { xs: "140%", sm: "220%", lg: "60%" },
+            width: { xs: "80%", sm: "80%", lg: "40%" },
           }}
         />
       </Stack>
@@ -160,11 +157,11 @@ function Login({ IOSSwitch }) {
           onChange={(e) => setIdentifier(e.target.value)}
           label={
             <Typography variant="body2" sx={{ color: "white" }}>
-              Email address or username
+              Email address or Username...
             </Typography>
           }
           sx={{
-            width: "17%",
+            width: { xs: "60%", sm: "45%", lg: "20%" },
             "& .MuiOutlinedInput-root": {
               "& fieldset": {
                 borderColor: "white",
@@ -192,6 +189,7 @@ function Login({ IOSSwitch }) {
             </Typography>
           }
           sx={{
+            width: { xs: "60%", sm: "45%", lg: "20%" },
             "& .MuiOutlinedInput-root": {
               "& fieldset": {
                 borderColor: "white",
@@ -230,14 +228,7 @@ function Login({ IOSSwitch }) {
           onChange={(e) => setPassword(e.target.value)}
         />
       </Stack>
-      <Stack spacing={2} direction="row" sx={{ justifyContent: "center" }}>
-        <FormGroup>
-          <FormControlLabel
-            control={<IOSSwitch sx={{ m: 1 }} defaultChecked />}
-            label="Remember me"
-          />
-        </FormGroup>
-      </Stack>
+
       <Stack sx={{ alignItems: "center" }} spacing={2}>
         {createAccount ? (
           <Button
@@ -248,10 +239,11 @@ function Login({ IOSSwitch }) {
             sx={{
               textTransform: "none",
               fontWeight: "1200px",
-              borderRadius: "25px",
+              borderRadius: "4px",
               padding: "14px",
               color: "black",
-              width: "22%",
+              width: "230px",
+              height: "58px",
               backgroundColor: "hsl(147, 100%, 43%)",
               "&:hover": {
                 backgroundColor: "hsl(158, 100%, 34%)",
@@ -315,7 +307,7 @@ function Login({ IOSSwitch }) {
           sx={{
             height: "1px",
             backgroundColor: "grey",
-            width: { xs: "140%", sm: "220%", lg: "60%" },
+            width: { xs: "80%", sm: "80%", lg: "40%" },
           }}
         />
       </Stack>

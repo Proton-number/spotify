@@ -1,4 +1,11 @@
-import { Box, Stack, Typography, IconButton, Slider, Skeleton } from "@mui/material";
+import {
+  Box,
+  Stack,
+  Typography,
+  IconButton,
+  Slider,
+  Skeleton,
+} from "@mui/material";
 import React, { useEffect, useCallback } from "react";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
@@ -102,33 +109,34 @@ function Player() {
 
   return (
     <Stack
-      direction="row"
-      sx={{ alignItems: "center", justifyContent: "space-around" }}
+      direction={{ sm: "row" }}
+      sx={{
+        alignItems: "center",
+        justifyContent: "space-around",
+        padding: { xs: "10px", sm: 0 },
+      }}
     >
-      <Stack
-        direction="row"
-        sx={{ alignItems: "center", justifyContent: "center" }}
-      >
+      <Stack direction="row" sx={{ alignItems: "center", gap: "30px" }}>
         {currentSong && currentSong.album && currentSong.album.images && (
           <Box
             component="img"
-            sx={{ width: "60px", height: "60px" }}
+            sx={{ width: { xs: "60px", sm: "60px" }, height: "60px" }}
             src={currentSong.album.images[0].url || ""}
             alt={currentSong.name}
           />
         )}
 
-        <Stack sx={{ width: "300px" }}>
-          <Box>
+        <Stack>
+          <>
             <Typography variant="body2" sx={{ fontWeight: "bold" }}>
               {currentSong ? currentSong.name : "Song name"}
             </Typography>
-          </Box>
+          </>
           <Typography variant="subtitle2" sx={{ opacity: "70%" }}>
             {currentSong ? currentSong.artists[0].name : "Artist"}
           </Typography>
         </Stack>
-        <IconButton onClick={handleLikeToggle}>
+        <IconButton onClick={handleLikeToggle} sx={{ marginLeft: "30px" }}>
           {isFavourite ? (
             <FavoriteIcon sx={{ color: "lightgreen" }} fontSize="medium" />
           ) : (
@@ -190,6 +198,8 @@ function Player() {
             onChange={handleSeek}
             sx={{
               width: {
+                xs: 300,
+                sm: 400,
                 lg: 600,
               },
 

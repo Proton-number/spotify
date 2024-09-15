@@ -80,42 +80,44 @@ function TopNav() {
       sx={{ alignItems: "center", justifyContent: "space-between" }}
     >
       <Stack direction="row" sx={{ alignItems: "center" }} spacing={3}>
-        <Link to="#" onClick={handleGoBack} style={{ color: "white" }}>
-          <Box
-            sx={{
-              display: "flex",
-              backgroundColor: "hsl(0, 0%, 4%)",
-              borderRadius: "50%",
-              justifyContent: "center",
-              padding: "3px",
-            }}
-          >
-            <KeyboardArrowLeftIcon
+        <Stack direction="row" sx={{ alignItems: "center", display:{xs:"none", sm:"flex"} }} spacing={3}>
+          <Link to="#" onClick={handleGoBack} style={{ color: "white" }}>
+            <Box
               sx={{
-                fontSize: 30,
-                cursor: "pointer",
+                display: "flex",
+                backgroundColor: "hsl(0, 0%, 4%)",
+                borderRadius: "50%",
+                justifyContent: "center",
+                padding: "3px",
               }}
-            />
-          </Box>
-        </Link>
-        <Link to="#" onClick={handleForward} style={{ color: "white" }}>
-          <Box
-            sx={{
-              display: "flex",
-              backgroundColor: "hsl(0, 0%, 4%)",
-              borderRadius: "50%",
-              justifyContent: "center",
-              padding: "3px",
-            }}
-          >
-            <KeyboardArrowRightIcon
+            >
+              <KeyboardArrowLeftIcon
+                sx={{
+                  fontSize: 30,
+                  cursor: "pointer",
+                }}
+              />
+            </Box>
+          </Link>
+          <Link to="#" onClick={handleForward} style={{ color: "white" }}>
+            <Box
               sx={{
-                fontSize: 30,
-                cursor: "pointer",
+                display: "flex",
+                backgroundColor: "hsl(0, 0%, 4%)",
+                borderRadius: "50%",
+                justifyContent: "center",
+                padding: "3px",
               }}
-            />
-          </Box>
-        </Link>
+            >
+              <KeyboardArrowRightIcon
+                sx={{
+                  fontSize: 30,
+                  cursor: "pointer",
+                }}
+              />
+            </Box>
+          </Link>
+        </Stack>
         {location.pathname === "/home" ? null : (
           <TextField
             value={inputValue}
