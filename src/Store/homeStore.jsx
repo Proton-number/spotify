@@ -1,12 +1,6 @@
 import { create } from "zustand";
-import SpotifyWebApi from "spotify-web-api-node";
+import { spotifyApi } from "../Config/Spotify";
 import useSpotifyStore from "./SpotifyStore";
-
-const spotifyApi = new SpotifyWebApi({
-  clientId: import.meta.env.VITE_SPOTIFY_CLIENT_ID,
-  clientSecret: import.meta.env.VITE_SPOTIFY_CLIENT_SECRET,
-  redirectUri: import.meta.env.VITE_SPOTIFY_REDIRECT_URL,
-});
 
 const homeStore = create((set) => ({
   recentlyPlayed: JSON.parse(localStorage.getItem("recentlyPlayed")) || [],

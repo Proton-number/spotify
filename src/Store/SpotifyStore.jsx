@@ -1,11 +1,5 @@
-import SpotifyWebApi from "spotify-web-api-node";
 import { create } from "zustand";
-
-const spotifyApi = new SpotifyWebApi({
-  clientId: import.meta.env.VITE_SPOTIFY_CLIENT_ID,
-  clientSecret: import.meta.env.VITE_SPOTIFY_CLIENT_SECRET,
-  redirectUri: import.meta.env.VITE_SPOTIFY_REDIRECT_URL,
-});
+import { spotifyApi } from "../Config/Spotify";
 
 const useSpotifyStore = create((set, get) => ({
   deviceId: null,

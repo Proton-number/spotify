@@ -259,7 +259,7 @@ function Nav() {
                   <Box
                     loading="lazy"
                     component="img"
-                    src={album.album.images[0].url}
+                    src={album?.album?.images?.[0]?.url}
                     alt={album.album.name}
                     sx={{
                       width: { xs: "60px", sm: "40px", lg: "60px" },
@@ -295,7 +295,7 @@ function Nav() {
                   <Box
                     loading="lazy"
                     component="img"
-                    src={podcast.show.images[0].url}
+                    src={podcast?.show?.images?.[0]?.url}
                     sx={{ width: { xs: "60px", sm: "40px", lg: "60px" } }}
                     alt={podcast.show.name}
                   />
@@ -328,7 +328,7 @@ function Nav() {
                   <Box
                     loading="lazy"
                     component="img"
-                    src={artist.images[0].url}
+                    src={artist?.images?.[0]?.url}
                     sx={{
                       width: { xs: "60px", sm: "40px", lg: "60px" },
                       borderRadius: "50%",
@@ -356,7 +356,7 @@ function Nav() {
                   <Box
                     loading="lazy"
                     component="img"
-                    src={playlist.images[0].url}
+                    src={playlist?.images?.[0]?.url}
                     sx={{ width: { xs: "60px", sm: "40px", lg: "60px" } }}
                   />
                   <Typography variant="body2">
