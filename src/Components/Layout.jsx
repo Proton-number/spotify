@@ -1,11 +1,9 @@
 import React from "react";
 import Nav from "./Nav";
-import NavMobile from "./NavMobile";
 import { useLocation } from "react-router-dom";
 import { Stack, Box, Paper } from "@mui/material";
 import TopNav from "./TopNav";
 import Player from "./Player";
-import { motion } from "framer-motion";
 
 function Layout({ children }) {
   const location = useLocation();
@@ -18,7 +16,7 @@ function Layout({ children }) {
           <Box sx={{ flexGrow: 1, display: "flex" }}>
             <Box
               sx={{
-                width: { xs: "34%", sm: "28%" },
+                width: { xs: "10%", sm: "28%" },
                 position: "fixed",
                 top: 14,
                 left: 12,
@@ -84,7 +82,6 @@ function Layout({ children }) {
           </Box>
         </Box>
       )}
-      {!isLoginPage && <NavMobile />}
     </>
   );
 }

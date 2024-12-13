@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuthenticationStore from "../../Store/authStore";
 import useSpotifyStore from "../../Store/SpotifyStore";
+import LoadingComponent from "../LoadingComponent";
 
 const Callback = () => {
   const navigate = useNavigate();
@@ -37,7 +38,7 @@ const Callback = () => {
     }
   }, [navigate, setUser, setAccessToken]);
 
-  return <div>Loading...</div>;
+  return <LoadingComponent />;
 };
 
 export default Callback;

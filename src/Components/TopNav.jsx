@@ -73,6 +73,11 @@ function TopNav() {
   const handleSearch = () => {
     searchSpotify();
   };
+  const searchHandler = (e) => {
+    if (e.key === "Enter") {
+      searchSpotify();
+    }
+  };
 
   return (
     <Stack
@@ -80,7 +85,11 @@ function TopNav() {
       sx={{ alignItems: "center", justifyContent: "space-between" }}
     >
       <Stack direction="row" sx={{ alignItems: "center" }} spacing={3}>
-        <Stack direction="row" sx={{ alignItems: "center", display:{xs:"none", sm:"flex"} }} spacing={3}>
+        <Stack
+          direction="row"
+          sx={{ alignItems: "center", display: { xs: "none", sm: "flex" } }}
+          spacing={3}
+        >
           <Link to="#" onClick={handleGoBack} style={{ color: "white" }}>
             <Box
               sx={{
@@ -120,6 +129,7 @@ function TopNav() {
         </Stack>
         {location.pathname === "/home" ? null : (
           <TextField
+            onKeyDown={searchHandler}
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             InputProps={{
@@ -164,7 +174,7 @@ function TopNav() {
                   color: "white",
                 },
               },
-              width: { lg: "50ch" },
+              width: { xs: "80%", lg: "50ch" },
             }}
           />
         )}

@@ -1,11 +1,4 @@
-import {
-  Box,
-  Stack,
-  Typography,
-  IconButton,
-  Slider,
-  Skeleton,
-} from "@mui/material";
+import { Box, Stack, Typography, IconButton, Slider } from "@mui/material";
 import React, { useEffect, useCallback } from "react";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
@@ -15,11 +8,7 @@ import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import PauseCircleIcon from "@mui/icons-material/PauseCircle";
 import RepeatIcon from "@mui/icons-material/Repeat";
 import ShuffleIcon from "@mui/icons-material/Shuffle";
-import VolumeUpRounded from "@mui/icons-material/VolumeUpRounded";
-import VolumeDownRounded from "@mui/icons-material/VolumeDownRounded";
 import PlayerStore from "../Store/playerStore";
-import { motion } from "framer-motion";
-import useSpotifyStore from "../Store/SpotifyStore";
 
 function Player() {
   const {
